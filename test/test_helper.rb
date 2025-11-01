@@ -6,6 +6,9 @@ unless ENV["WP_ENV"] == "test"
   exit
 end
 
+# Load Ruby 3.x compatibility layer for dry-validation and Fixnum/Bignum
+require_relative "../ruby3_compat"
+
 # curgas env
 ENV["CG_HOST_URL"] = "https://codsapi.curoil.com"
 ENV["CG_USERNAME"] = "pagafasil"

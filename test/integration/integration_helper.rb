@@ -1,4 +1,5 @@
 require "./test/test_helper"
+require "rack"
 require "rack/test"
 require "pp"
 
