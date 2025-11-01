@@ -42,15 +42,15 @@ gem "rqrcode"
 # memcached
 gem "dalli"
 
-# validation, THESE ARE ANCIENT
-# d_struct should be updated
-gem "dry-configurable", "0.1.4"
-gem "dry-equalizer", "0.2.0"
-gem "dry-logic", "0.2.2"
-gem "dry-container", "0.3.1"
-gem "dry-types", "0.7.1"
-gem "dry-validation", "0.7.4"
-gem "d_struct" # depends on above dry gems
+# validation - UPGRADED TO RUBY 3.x COMPATIBLE VERSIONS
+# Note: d_struct gem may need updates for new dry-validation API
+gem "dry-configurable", "~> 1.1"     # 0.1.4 → 1.1 (Ruby 3.x compatible)
+gem "dry-container", "~> 0.11"       # 0.3.1 → 0.11 (Ruby 3.x compatible)
+gem "dry-equalizer", "~> 0.3"        # 0.2.0 → 0.3 (Ruby 3.x compatible)
+gem "dry-logic", "~> 1.5"            # 0.2.2 → 1.5 (Ruby 3.x compatible)
+gem "dry-types", "~> 1.7"            # 0.7.1 → 1.7 (Ruby 3.x compatible)
+gem "dry-validation", "~> 1.10"      # 0.7.4 → 1.10 (Ruby 3.x compatible, API changed!)
+gem "d_struct" # depends on above dry gems - may need refactoring
 
 # console
 gem "tty-prompt"
