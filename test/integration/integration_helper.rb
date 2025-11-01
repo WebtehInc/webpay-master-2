@@ -3,7 +3,9 @@ require "rack"
 require "rack/test"
 require "pp"
 
-APP = Rack::Builder.parse_file("config.ru").first
+# Rack 3.x compatibility: parse_file returns app directly (not [app, options] like Rack 2.x)
+rack_app = Rack::Builder.parse_file("config.ru")
+APP = rack_app.is_a?(Array) ? rack_app.first : rack_app
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5"
 
 # save typing when checking for these
