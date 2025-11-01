@@ -8,8 +8,8 @@ use Rack::SecureHeaders
 # set CORS
 use Rack::Cors do
   allow do
-    # origins "*" # use in dev for localhost
-    origins ENV["WP_SPA_HOST_URL"].chomp("#!").to_s
+    origins "*" # use in dev for localhost
+    # origins ENV["WP_SPA_HOST_URL"].chomp("#!").to_s
     resource "*", :headers => :any, :methods => [:get, :post, :options, :put, :patch], :expose => ["X-total-count", "X-per-page"]
   end
 end
