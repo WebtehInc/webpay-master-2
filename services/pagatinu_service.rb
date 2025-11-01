@@ -3,6 +3,7 @@ module PagatinuService
 
   require "json"
   require "faraday"
+  require "base64"
 
   # env
   HOST_URL = ENV["PG_HOST_URL"]
@@ -12,8 +13,8 @@ module PagatinuService
   RECHARGE_PATH = ENV["PG_RECHARGE_PATH"]
 
   FARADAY = Faraday.new(:url => HOST_URL) do |builder|
+    builder.headers['Authorization'] = "Basic #{Base64.strict_encode64("#{USERNAME}:#{PASSWORD}")}"  # Faraday 2.x API
     builder.adapter Faraday::Adapter::NetHttp
-    builder.use Faraday::Request::BasicAuthentication, USERNAME, PASSWORD
   end
 
   def recharge(customer_id, tx_id, amount, validate_only)
