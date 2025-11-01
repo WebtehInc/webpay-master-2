@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # ruby version
-ruby "2.6.8"
+ruby "3.3.0"
 
 # tools
 gem "rake", "~> 13.0", ">= 13.0.6"
@@ -10,7 +10,7 @@ gem "rerun"
 gem "irb"
 
 # server
-gem "puma", "~> 5.6"
+gem "puma", "~> 6.4", ">= 6.4.3"
 gem "puma_worker_killer"
 
 # db
@@ -23,8 +23,8 @@ gem "pg"
 gem "oj"
 
 # web
-gem "rack", "~> 2.2", ">= 2.2.6"
-gem "rack-cors", "~> 1.1", ">= 1.1.1"
+gem "rack", "~> 3.1"
+gem "rack-cors", "~> 2.0"
 gem "roda"
 gem "roda-symbolized_params"
 gem "tilt"
@@ -60,10 +60,10 @@ gem "tty-command"
 gem "ibanizator"
 
 # for HTTP apis
-gem "faraday", "1.10.3"
-gem "activesupport", "~> 6.1", ">= 6.1.4", require: false
+gem "faraday", "~> 2.0"
+gem "activesupport", "~> 7.0", require: false
 gem "builder"
-gem "nokogiri", "1.13.10"
+gem "nokogiri", "~> 1.16", ">= 1.16.5"
 
 # mail
 gem "mail"
