@@ -1,0 +1,80 @@
+GET {{host}}/api/CurgasExternalOrders/100028000299/1/1
+[
+    {
+        "curgas_id": "100028000299",
+        "quantity_request": 1,
+        "rush_delivery": 1,
+        "host_name": "null",
+        "customer_type": "DOMESTIC",
+        "customer_name": "V WALL",
+        "connection_address": "Noord Roosendaal #206 ",
+        "customer_connection": "NORMAL",
+        "domestic_price": 8000,
+        "commercial_price": 19000,
+        "rush_delivery_price": 0,
+        "max_order_domestic": 6,
+        "product_quantity": 2,
+        "product_max": 6,
+        "can_order": "Y",
+        "pos_may_order": "null",
+        "total_order": 8000,
+        "cods_identity": "20220510225931076000000076000000ZPDFRT9FIN",
+        "error": 0
+    }
+]
+
+
+
+POST {{host}}/api/NewOrder
+
+{
+  "company": "01",
+  "curgas_id": "100028000299",
+  "cods_identity": "20220510225931076000000076000000ZPDFRT9FIN",
+  "quantity_request": 1,
+  "rush_delivery": 1,
+  "total_paid": 8000,
+  "order_num": "0",
+  "error": 0
+}
+
+[
+    {
+        "company": "01",
+        "curgas_id": "100028000299",
+        "cods_identity": "20220510225931076000000076000000ZPDFRT9FIN",
+        "quantity_request": 1,
+        "rush_delivery": 1,
+        "total_paid": 8000,
+        "order_num": "1966889",
+        "error": 0
+    }
+]
+ 
+
+401 - invalid token
+
+expired token:
+eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoicGFnYWZhc2lsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2NjUwMzA3Mzh9.VqPDBCb4U6VhnTfayO_pL2t4lf_OAl4GVxe9Rnqq51p1vA3DI_hkdmeg2vTrmOxWHeJbA_tKcNQjj1Lx9bIyAQ
+
+
+removed:
+ - currency (set from operator)
+ - amount
+ - operator.min_amount
+
+TESTS:
+check order empty input:
+{:api_version=>["is missing"], :application_version=>["is missing"], :access_token=>["is missing"], :digest=>["is missing"], :systan=>["is missing"], :client_datetime=>["is missing"], :cashier_pin=>["is missing"], :cashier_id=>["is missing"], :payment_method=>["is missing"], :payment_method_type=>["is missing"], :curgas_id=>["is missing"], :quantity=>["is missing"], :rush=>["is missing"]}
+
+check order valid input:
+{"digest"=>"cc0718728705d34971a6a05d528f929c7a337432d0cedf20b6600568062b253f55cc15ca56509851f674b9ccff0000c9c4ccb2249b71ff912e6cac1faea8f940", "cashier"=>"John Cashier", "data"=>{"curgas_id"=>123, "quantity_request"=>10, "rush_delivery"=>1, "can_order"=>"Y", "total_order"=>1000, "cods_identity"=>456, "error"=>0}, "api_version"=>"1.0.0.", "application_version"=>"1.0.0."}
+
+new order empty input:
+{:api_version=>["is missing"], :application_version=>["is missing"], :access_token=>["is missing"], :digest=>["is missing"], :systan=>["is missing"], :client_datetime=>["is missing"], :cashier_pin=>["is missing"], :cashier_id=>["is missing"], :payment_method=>["is missing"], :payment_method_type=>["is missing"], :cods_identity=>["is missing"]}
+
+new order valid input:
+{"digest"=>"edb4f760e4940df831acfe610a4e151a3c5bac9eab2ea1952112be91f7de26dd7a16b8b8c4c3757d8adcd43c26939abc82871ee575e18a44c65cf9e4774f522d", "cashier"=>"John Cashier", "data"=>{"company"=>"01", "curgas_id"=>"123", "cods_identity"=>"456", "quantity_request"=>10, "rush_delivery"=>1, "total_paid"=>1000, "order_num"=>"123456", "error"=>0}, "api_version"=>"1.0.0.", "application_version"=>"1.0.0."}
+
+
+

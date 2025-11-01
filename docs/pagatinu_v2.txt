@@ -1,0 +1,68 @@
+https://blue.ppe2.net/srater2-web/resources/recharge
+?CustomerId=TEST_ROOT_1&PaymentTransID=24-11-001&ChannelId=External&Amount=14000&UseCase=New
+&TicketInfo=Free text&ValidateOnly=false&PaymentProvider=Pagafasil
+
+Ok:
+{
+    "name": "recharge",
+    "param": [
+        {
+            "pname": "Account",
+            "pval": "180000"
+        },
+        {
+            "pname": "Delta",
+            "pval": "14000"
+        },
+        {
+            "pname": "PaymentTransID",
+            "pval": "28-11-001"
+        },
+        {
+            "pname": "OwnTransID",
+            "pval": "G20000000306"
+        },
+        {
+            "pname": "Contract.Address",
+            "pval": "My nice address"
+        }
+    ]
+}
+
+Error:
+{
+    "name": "recharge",
+    "param": [
+        {
+            "pname": "ErrorCode",
+            "pval": "1006"
+        },
+        {
+            "pname": "ErrorText",
+            "pval": "PaymentTransID already used"
+        },
+        {
+            "pname": "ErrorType",
+            "pval": "Recharge"
+        }
+    ]
+}
+
+
+ValidateOnly=true
+{
+    "name": "recharge",
+    "param": [
+        {
+            "pname": "Account",
+            "pval": "203100"
+        },
+        {
+            "pname": "PaymentTransID"
+        },
+        {
+            "pname": "Contract.Address",
+            "pval": "My nice address"
+        }
+    ]
+}

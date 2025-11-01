@@ -1,0 +1,15 @@
+diff --git a/services/card_authorization_service.rb b/services/card_authorization_service.rb
+index 728ae2c..b318dc7 100644
+--- a/services/card_authorization_service.rb
++++ b/services/card_authorization_service.rb
+@@ -9,7 +9,8 @@ module CardAuthorization
+     gateway = WebPay.opts[:iso_switch].new
+ 
+     # static data from terminal record
+-    terminal_data =  {authenticity_token: terminal.access_token, secret: terminal.terminal_key} # tid: terminal.tid, mid: terminal.mid
++    terminal_data = InfoSwitch.api_keys('Terminal', terminal.access_token)
++    # terminal_data =  {authenticity_token: terminal.access_token, secret: terminal.terminal_key} # tid: terminal.tid, mid: terminal.mid
+ 
+     # data to be stored in wallet transaction table
+     wallet_data = params.slice(:amount, :systan).merge(currency: CURRENCY_CODES[params[:currency].to_s], transaction_type: TYPES_MAPPER[params[:transaction_type].to_sym])
+

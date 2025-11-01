@@ -1,0 +1,12 @@
+[{"id":1,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":1,"currency":"ANG","active":false,"period":1,"period_type":"day", "type": "count"},
+{"id":2,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":100000,"currency":"ANG","active":false,"period":1,"period_type":"day", "type": "volume"},
+
+{"id":3,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":2,"currency":"ANG","active":false,"period":1,"period_type":"day", "type": "count"},
+{"id":4,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":200000,"currency":"ANG","active":false,"period":1,"period_type":"day", "type": "volume"},
+
+
+{"id":5,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":1,"currency":"ANG","active":false,"period":1,"period_type":"week", "type": "count"},
+{"id":6,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":100000,"currency":"ANG","active":false,"period":1,"period_type":"week", "type": "volume"},
+
+{"id":7,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":2,"currency":"ANG","active":false,"period":1,"period_type":"week", "type": "count"},
+{"id":8,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":200000,"currency":"ANG","active":false,"period":1,"period_type":"week", "type": "volume"}]

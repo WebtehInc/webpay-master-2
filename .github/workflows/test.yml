@@ -1,0 +1,30 @@
+env:
+  # caching on Github container registry doesn't work properly (Mar 2021)
+  # CACHE_IMAGE: webteh/webpay ?
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  # DOCKER_REPO_USER: 
+  # DOCKER_REPO_ACCESS_TOKEN: ${{ secrets.DOCKER_REPO_ACCESS_TOKEN }}
+
+name: Unit tests
+# activating both push and pull_request causes both builds to destroy each others cache
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 40    
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+      #- name: Log in to docker hub
+      #  run: docker login -u ${DOCKER_REPO_USER} -p ${DOCKER_REPO_ACCESS_TOKEN}
+      - name: build        
+        run: |
+          # use docker-container driver
+          docker buildx create --use          
+          # cache version, needs compatible docker repo
+          # docker buildx build -t ${CACHE_IMAGE}:latest --cache-from=type=registry,ref=${CACHE_IMAGE}:latest --cache-to=type=registry,ref=${CACHE_IMAGE}:latest,mode=max --push --progress=plain .
+      - name: test
+        run: |
+          # WARNING: docker-compose will not pass any variables to containers unless you tell him to
+          docker-compose -f docker-compose-test.yml up --exit-code-from test

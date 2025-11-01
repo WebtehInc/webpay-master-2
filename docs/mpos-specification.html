@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebPay mPOS specification 1.1.0</title>
+      <link rel="stylesheet" href="http://oss.maxcdn.com/semantic-ui/2.1.8/semantic.min.css">
+  </head>
+  <body>
+
+    <div class="ui container">
+      <br>
+      <h1 class="ui dividing header">
+        WebPay mPOS specification
+        <div class="sub header">
+          Card authorization, bill payment and voucher selling
+        </div>
+      </h1>
+
+      <p>
+        <a href="#configuration" class="ui basic tiny blue submit button">Terminal configuration</a>
+        <a href="#financial" class="ui basic tiny blue button">Card authorization</a>
+        <a href="#bill" class="ui basic tiny blue button">Bill payment</a>
+        <a href="#bill-reversal" class="ui basic tiny blue button">Bill payment reversal</a>
+        <a href="#voucher" class="ui basic tiny blue button">Voucher selling</a>
+        <a href="#topup" class="ui basic tiny blue button">Account top-up</a>
+        <a href="#services-settlement" class="ui basic tiny blue button">Services settlement</a>
+        <a href="#cashiers" class="ui basic tiny blue button">Managing cashiers</a>
+      </p>
+
+      <p>Version 1.4.0.</p>
+
+      <h2 class="ui header">
+        General instructions
+      </h1>
+
+      <p>All messages are send over HTTPS to RESTful service in JSON
+      format. Client should set proper HTTP headers and HTTP verbs when
+      sending requests and check for HTTP status codes when evaluate
+      response:</p>
+
+      <p><strong>Request HTTP headers:</strong></p>
+      <ul>
+        <li>Accept:application/json</li>
+        <li>Content-Type:application/json</li>
+      </ul>
+
+      <p><strong>Request methods:</strong></p>
+      <ul>
+        <li>POST for sending mesages</li>
+      </ul>
+
+      <p><strong>Response HTTP status codes:</strong></p>
+      <ul>
+        <li>200 OK: valid request, it will be send to upstream server, i.e. bank or operator</li>
+        <li>422 Unprocessable entity: invalid request due to input validation, it will not propagate further</li>
+        <li>500 Internal server error: server application error, a bug - they hide we seek</li>
+      </ul>
+
+      <p><strong>Other notices:</strong></p>
+
+      <ul>
+        <li>use the status field to get response status when available, not
+        HTTP response code, e.g. a transaction may be declined by the
+        acquirer and it will have HTTP 200 OK and status field
+        "declined"</li>
+        <li>note that there may be response fields which aren't a part of
+        the specification, (id, created_at, ...), don't count on them as
+        they may be subject to change without prior notice</li>
+        <li>we will introduce new fields if the requirements changes in the
+        future</li>
+        <li>don't let the client application break if it encounters extra
+        response parameters (mass unrestricted attribute assignment will do
+        this, for example)</li>
+        <li>parametrize the API host root url and API paths, this will be subject to
+        change and will be different between test and production
+        systems</li>
+        <li>response timeout is at 30 seconds and subject to change</li>
+      </ul>
+
+      <h2 class="ui dividing header" id="configuration">
+        Terminal configuration
+        <div class="sub header">
+          Update terminal with new settings on server
+        </div>
+      </h2>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/configure-terminal</label> URL.</p>
+
+      <p>
+        Happens for each terminal at least once per day.
+        There should be also an option for merchant to force the update if he wants to sync the config manually.
+      </p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Notice:</strong>
+        api_version, application_version, application_version and terminal_key are entered manually
+        into device prior to sending configuration request (those values are copied from merchant settings on server).
+        Upon successful request the terminal will be ready for use.
+      </p>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, config_version)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>merchant_name</td>
+            <td>string</td>
+            <td>My store</td>
+            <td>name of merchant, printed on receipt</td>
+          </tr>
+          <tr>
+            <td>merchant_address</td>
+            <td>string</td>
+            <td>Elmstreet 11</td>
+            <td>address of merchant, printed on receipt</td>
+          </tr>
+          <tr>
+            <td>merchant_phone</td>
+            <td>string</td>
+            <td>111 123 456</td>
+            <td>phone of merchant, printed on receipt</td>
+          </tr>
+          <tr>
+            <td>tid</td>
+            <td>string</td>
+            <td>TERM001</td>
+            <td>terminal identifier</td>
+          </tr>
+          <tr>
+            <td>mid</td>
+            <td>string</td>
+            <td>MERC001</td>
+            <td>merchant identifier</td>
+          </tr>
+          <tr>
+            <td>default_currency</td>
+            <td>string</td>
+            <td>USD</td>
+            <td>default currency</td>
+          </tr>
+          <tr>
+            <td>accepted_currencies</td>
+            <td>array of strings</td>
+            <td>['USD', 'EUR', ...]</td>
+            <td>list with currencies that merchant can choose from, can be selected per transaction</td>
+          </tr>
+          <tr>
+            <td>accepted_cards</td>
+            <td>array of strings</td>
+            <td>['visa', 'amex', ...]</td>
+            <td>list of supported card types</td>
+          </tr>
+          <tr>
+            <td>number_of_installments</td>
+            <td>integer</td>
+            <td>1 to 36</td>
+            <td>installments if available, default to false</td>
+          </tr>
+          <tr>
+            <td>receipt_text</td>
+            <td>string</td>
+            <td>Thank you for buying! ...</td>
+            <td>four lines of text printed on receipt</td>
+          </tr>
+          <tr>
+            <td>config_version</td>
+            <td>integer</td>
+            <td>incremented value, started with 0</td>
+            <td>current version of configuration, update terminal if it is greater then previous one</td>
+          </tr>
+          <tr>
+            <td>services_batch_number</td>
+            <td>number</td>
+            <td>123</td>
+            <td>current services batch number, increments after each settlement</td>
+          </tr>
+          <tr>
+            <td>payment_methods</td>
+            <td>hash of hashes</td>
+            <td>{"cash"=>{"name"=>"Cash", "types"=>{}}, "card"=>{"name"=>"Card", "types"=>{"credit"=>"Credit card", "debit"=>"Debit card"}}, "check"=>{"name"=>"Check", "types"=>{"psb"=>"PSB bank", "giro"=>"Giro bank", "mcb"=>"MCB bank"}}}</td>
+            <td>
+              used to construct selection for payment_method and payment_method_type;
+              first level key/name is payment_method; second level 'types' key holds hash for payment_method_type;
+              cash option does not have selection for payment_method<br>
+              <strong>EXAMPLE</strong>:<br>
+              menu selection: Card -> Credit card<br>
+              sent to server:<br>
+              payment_method=card<br>
+              payment_method_type=credit
+            </td>
+          </tr>
+          <tr>
+            <td>operators</td>
+            <td>array of hashes</td>
+            <td>
+              [
+               {"name": "Aquaelectra", "code": "ae", "currency": "USD", "type": "bill"},<br>
+               {"name": "Chippie", "code": "ch", "currency": "USD", "type": "voucher"},<br>
+               {"name": "Digicell", "code": "dc", "currency": "USD", "type": "voucher"}
+              ]
+            </td>
+            <td>
+              used to construct menu for bill payment and voucher selling, code value is sent to server<br>
+              <strong>EXAMPLE</strong>:<br>
+              menu selection: Bill payment -> Aquaelectra
+            </td>
+          </tr>
+          <tr>
+            <td>vouchers</td>
+            <td>array of hashes</td>
+            <td>
+              [
+              {"name": "Chippie 50", "operator_code": "ch", "count": 2, "price": 5000, "currency": "USD"},<br>
+              {"name": "Chippie 100", "operator_code": "ch", "count": 2, "price": 10000, "currency": "USD"},<br>
+              {"name": "Digicell 100", "operator_code": "dc", "count": 1, "price": 10000, "currency": "USD"}
+              ]
+            </td>
+            <td>
+              used to construct menu for voucher selling, only name value is sent to server; count is voucher stock,
+              once it drops to zero the server will decline the transaction<br>
+              <strong>EXAMPLE</strong>:<br>
+              menu selection: Sell voucher -> Chippie -> Chippie 50
+            </td>
+          </tr>
+          <tr>
+             <td>cashiers</td>
+             <td>array of hashes</td>
+             <td>
+               [{"full_name"=>"Jim Cashier", "manager"=>true}, {"full_name"=>"Joe Cashier", "manager"=>false}]
+             </td>
+             <td>
+               used to construct menu for for editing existing cashiers<br>
+               <strong>EXAMPLE</strong>:<br>
+               menu selection: Cashiers -> John Cashier -> Edit (or Change pin)
+             </td>
+           </tr>
+           <tr>
+             <td>session_keys</td>
+             <td>hash</td>
+             <td>{"mac_key": ..., "mac_key_kcv": ..., "pin_key": ..., "pin_key_kcv": ..., "data_key": ..., "data_key_kcv": ...}</td>
+             <td>encryption keys, changed on every config download</td>
+           </tr>
+        </tbody>
+      </table>
+
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h2 class="ui dividing header" id="financial">
+        Card authorization
+        <div class="sub header">
+          Authorization, sale and cash advance
+        </div>
+      </h2>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/authorize</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Source</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>configuration</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>constant</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>configuration</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>Digest(terminal_key, access_token, systan, amount, currency, tid, mid)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>tid</td>
+            <td>string</td>
+            <td>configuration</td>
+            <td>TERM001</td>
+            <td>terminal identifier</td>
+          </tr>
+          <tr>
+            <td>mid</td>
+            <td>string</td>
+            <td>configuration</td>
+            <td>MERC001</td>
+            <td>merchant identifier</td>
+          </tr>
+          <tr>
+            <td>systan</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>00012345</td>
+            <td>client side ID of transaction, see the systan section</td>
+          </tr>
+          <tr>
+            <td>client_datetime</td>
+            <td>datetime</td>
+            <td>computed</td>
+            <td>2016-04-19 15:02:49 +0200</td>
+            <td>current datetime on device with 24 hour clock and timezone offset</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered</td>
+            <td>1234</td>
+            <td>cashier's pin, entered for each authorization call</td>
+          </tr>
+          <tr>
+            <td>entry_method</td>
+            <td>string</td>
+            <td>constant</td>
+            <td>emv, emv_nfc, magstripe, fallback, keyed_entry</td>
+            <td>how the PAN was entered into the system, see <a href="#entry_method">entry_method specification</a></td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>integer</td>
+            <td>entered</td>
+            <td>12244</td>
+            <td>transaction amount in cents, i.e. 1200 for 12.00</td>
+          </tr>
+          <tr>
+            <td>currency</td>
+            <td>string</td>
+            <td>default (default_currency) or selected from available_currencies (from configuration)</td>
+            <td>USD, EUR, NAF</td>
+            <td>transaction currency, equals to default_currency, can be changed per transaction</td>
+          </tr>
+          <tr>
+            <td>number_of_installments</td>
+            <td>integer</td>
+            <td>optional, selected from range i.e. 1-36 (from configuration)</td>
+            <td>6</td>
+            <td>transaction installments if enabled for merchant</td>
+          </tr>
+          <tr>
+            <td>transaction_type</td>
+            <td>string</td>
+            <td>default (sale) or selected</td>
+            <td>authorization, sale, capture, cash_advance</td>
+            <td>transaction type, can be changed per transaction</td>
+          </tr>
+
+          <tr class="warning">
+            <td colspan="5">In case of keyed entry:</td>
+          </tr>
+          <tr>
+            <td>pan</td>
+            <td>string</td>
+            <td>entered</td>
+            <td>4012001037141112</td>
+            <td>primary account number</td>
+          </tr>
+          <tr>
+            <td>exp_date</td>
+            <td>string</td>
+            <td>entered</td>
+            <td>0820</td>
+            <td>card expiration date in MMYY format</td>
+          </tr>
+
+          <tr class="warning">
+            <td colspan="5">In case of EMV:</td>
+          </tr>
+          <tr>
+            <td>ch_authentication</td>
+            <td>string</td>
+            <td>constant</td>
+            <td>signature, offline_pin, online_pin</td>
+            <td>how cardholder is authenticated</td>
+          </tr>
+          <tr>
+            <td>pin_block</td>
+            <td>string</td>
+            <td>computed from entered value</td>
+            <td>see <a href="#emv">EMV specification</a> for more information</td>
+            <td>PIN-block for transporting an EMV smart-card PIN, only for online_pin</td>
+          </tr>
+          <tr>
+            <td>ch_name</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>John Doe</td>
+            <td>card holder name, if available</td>
+          </tr>
+          <tr>
+            <td>pan</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>4012001037141112</td>
+            <td>primary account number</td>
+          </tr>
+          <tr>
+            <td>exp_date</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>0820</td>
+            <td>card expiration date in MMYY format</td>
+          </tr>
+          <tr>
+            <td>emv_data</td>
+            <td>hash</td>
+            <td>from card</td>
+            <td>
+              {"809C":"00",
+              "9F36":"0001", "9F37":"D8B57618",
+              "9F26":"45B2B2B634ADB290",
+              "9F27", ...}
+            </td>
+            <td>
+              a data structure containing EMV tags as provided by the device's EMV kernel,
+              see <a href="#emv">EMV specification</a> for more information
+            </td>
+          </tr>
+          <tr>
+            <td>track1, track2, track3</td>
+            <td>string</td>
+            <td>from card if available, track2 should be available 99.99% of the time</td>
+            <td>ISO/IEC 7813 format</td>
+            <td><a href="https://en.wikipedia.org/wiki/ISO/IEC_7813">
+              https://en.wikipedia.org/wiki/ISO/IEC_7813</a></td>
+          </tr>
+
+          <tr class="warning">
+            <td colspan="5">In case of magstripe or fallback:</td>
+          </tr>
+          <tr>
+            <td>ch_authentication</td>
+            <td>string</td>
+            <td>constant</td>
+            <td>signature, online_pin</td>
+            <td>how cardholder is authenticated</td>
+          </tr>
+          <tr>
+            <td>pin_block</td>
+            <td>string</td>
+            <td>computed from entered value</td>
+            <td>see specs for more information</td>
+            <td>only for online_pin</td>
+          </tr>
+          <tr>
+            <td>ch_name</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>John Doe</td>
+            <td>card holder name, if available</td>
+          </tr>
+          <tr>
+            <td>pan</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>4012001037141112</td>
+            <td>primary account number</td>
+          </tr>
+          <tr>
+            <td>exp_date</td>
+            <td>string</td>
+            <td>from card</td>
+            <td>0820</td>
+            <td>card expiration date in MMYY format</td>
+          </tr>
+          <tr>
+            <td>track1, track2, track3</td>
+            <td>string</td>
+            <td>from card if available, track2 should be available 99.99% of the time</td>
+            <td>ISO/IEC 7813 format</td>
+            <td><a href="https://en.wikipedia.org/wiki/ISO/IEC_7813">
+              https://en.wikipedia.org/wiki/ISO/IEC_7813</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <p><strong>Response fields specification for valid requests - 200 HTTP code</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="5">Echoed values: api_version, application_version, systan, transaction_type</td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>incrementing value</td>
+            <td>unique identifier for transaction</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, systan)</td>
+            <td>calculate this digest on client and check it against this value</td>
+          </tr>
+          <tr>
+            <td>approval_code</td>
+            <td>string</td>
+            <td>1234ABCD</td>
+            <td>optional, set when provided by the issuer</td>
+          </tr>
+          <tr>
+            <td>reference_number</td>
+            <td>string</td>
+            <td>00000123456</td>
+            <td>optional, set only if transaction is approved by the issuer</td>
+          </tr>
+          <tr>
+            <td>emv_data</td>
+            <td>hash</td>
+            <td>
+              {"809C":"00",
+              "9F36":"0001", "9F37":"D8B57618",
+              "9F26":"45B2B2B634ADB290",
+              "9F27", ...}
+            </td>
+            <td>
+              a data structure containing EMV tags as provided by the issuer, see <a href="#emv">EMV specification</a> for more information
+            </td>
+          </tr>
+          <tr>
+            <td>response_code</td>
+            <td>string</td>
+            <td>0, 00, 1, 01 ...</td>
+            <td>
+                0 or 00 is usually for approved transactions,
+                other codes indicates reason for decline (like not enough funds)
+            </td>
+          </tr>
+          <tr>
+            <td>response_message</td>
+            <td>string</td>
+            <td>stolen card, not enough funds ...</td>
+            <td>optional informative text</td>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>string</td>
+            <td>approved, declined</td>
+            <td>indicate outcome of transaction, ONLY approved status means successful transaction</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p id="error"><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>
+        Only invalid fields will be reported.
+        Each offending attribute has its entry in json in this form:
+      </p>
+
+      <div class="ui message">
+        {attr1: [error description 1, error description 2, ...], attr2: [error description 1, error description 2, ...]}
+      </div>
+
+      <p>
+        For example, if amount is not integer and if systan is not unique response will look like this:
+      </p>
+
+      <div class="ui message">
+        {"amount": ["must be an integer"], "systan": ["must be unique"]}
+      </div>
+
+      <p>
+        Request can be also declined even if it is valid in case when certain conditions are met.
+        For example:
+      </p>
+
+      <ul>
+        <li>{"access_token": ["unknown terminal"]} - when terminal is disabled on server</li>
+        <li>{"customer_number": ["unknown customer"]} - if invalid value is entered</li>
+        <li>{"amount": ["credit limit exceeded"]} - credit limit for merchant</li>
+        <li>{"amount": ["amount limit exceeded"]} - limit for single payment</li>
+      </ul>
+
+      <p>
+        In each of these cases a message should be printed on screen.
+      </p>
+
+      <h3 id="digest">digest field specification</h3>
+
+      <p>The digest field is calculated differently in different API
+      calls, it is used to protect critical API data fields. When the
+      message specification says Digest(a,b,c) what is meant is:</p>
+
+      <div class="ui message">
+        Digest::SHA512.hexdigest(a+b+c)
+      </div>
+
+      <p>Integers and boolean values are converted to their string representation.</p>
+
+      <p>For example, if message specification says the digest is defined
+      as Digest(terminal_id, terminal_key, active) this means that if terminal_id
+      is integer 12345, terminal_key is string 'secret!1Key' and active is boolean true then the digest is equal
+      to:</p>
+
+      <div class="ui message">
+        Digest::SHA512.hexdigest('12345secret!1Keytrue') =&gt; "8f9c98b16a85914..."
+      </div>
+
+      <h3>systan field specification</h3>
+
+      <p>The purpose of this integer field is to prevent duplicate
+      transactions.</p>
+
+      <p>A common scenario in transaction processing is that network
+      disconnects after the message is sent and before the response
+      arrives. This results in a "declined" status on the client and
+      possibly an approved transaction on the server.</p>
+
+      <p>Before you make another transaction with a new systan, you
+      should attempt a reversal using the systan field to reference the
+      last request. The reversal should always succeed, but in case it
+      doesn't it should stop processing transactions until it does.</p>
+
+      <p>Systan should be unique for last 24h at least and should
+      reliably increment for +1, this way gaps in systans can be used to
+      trace system issues.</p>
+
+
+      <h3 id="entry_method">entry_method field specification</h3>
+
+      <p>This field describes how the PAN was entered into the system,
+      possible values are emv, emv_nfc, magstripe, fallback,
+      keyed_entry</p>
+
+      <ul>
+        <li>
+          <strong>emv</strong> - the device's chip was used to authenticate the cardholder
+          by inserting the card into the EMV reader, see EMV specification
+        </li>
+
+        <li>
+          <strong>emv_nfc</strong> - like emv, but NFC was used to facilitate EMV message
+          exchange, not the connector in the POS
+        </li>
+
+        <li>
+          <strong>magstripe</strong> - when a card does not have a chip, possibly identifiable
+          using the "Service Code" field, see <a href="https://en.wikipedia.org/wiki/Magnetic_stripe_card">
+          https://en.wikipedia.org/wiki/Magnetic_stripe_card</a>
+        </li>
+
+        <li>
+          <strong>fallback</strong> - when a card has a chip, EMV was attempted but failed due
+          to chip not being readable by the hardware in 3 attempts and the
+          device proceeded with fallback to magstripe. Common way of going
+          around the EMV by fraudulent merchants is to put the card into the
+          reader upside-down 3 times so the server needs to flag this as a
+          special kind off entry instead of simply calling it 'magstripe'
+        </li>
+
+        <li>
+          <strong>keyed_entry</strong> - a last resort, the merchant lets the cardholder enter
+          the data manually on the POS, will be disabled by default
+        </li>
+
+      </ul>
+
+      <p>As you can tell, some of the options are more dangerous than
+      others, basically: emv_nfc &gt; emv &gt; magstripe &gt; fallback
+      &gt; keyed_entry preference should be implemented on the POS device.</p>
+
+
+
+      <h3 id="emv">EMV specification</h3>
+
+      <p>Be sure to read <a href="https://en.wikipedia.org/wiki/EMV">https://en.wikipedia.org/wiki/EMV</a></p>
+
+      <p>The EMV kernel should provide you with a set of attributes (key, value), for example:</p>
+
+      <div class="ui message">
+        <code>
+        "84":"A0000000049999C000010560", "8F":"04", "82":"5800", "9F02":"000000023398",
+        "95":"0000001000", "9A":"100109", "9C":"00", "9F36":"0001", "9F37":"D8B57618",
+        "9F26":"45B2B2B634ADB290","9F27":"80", "9F10":"0D10A50003020800C75900000000000000FF",
+        "9F34":"410302"
+        </code>
+      </div>
+
+
+      <p>
+        This data may or may not be provided by the hardware using
+        BER-TLV format, see
+        <a href="http://chipnpin.blogspot.hr/2012/09/ber-tlv-encoding-of-emv-tags.html">
+          http://chipnpin.blogspot.hr/2012/09/ber-tlv-encoding-of-emv-tags.html
+        </a>
+        and
+        <a href="https://stackoverflow.com/questions/18853800/simlpe-tlv-vs-ber-tlv">
+          https://stackoverflow.com/questions/18853800/simlpe-tlv-vs-ber-tlv
+        </a>
+      </p>
+
+      <p>The server will generally forward from the issuer something like:</p>
+
+      <div class="ui message">
+        <code>
+          "84":"A0000000049999C000010560", "8F":"04", "82":"5800", "9F02":"000000023398",
+          "95":"0000001000", "9A":"100109", "9C":"00", "9F36":"0001", "9F37":"D8B57618",
+          "9F26":"45B2B2B634ADB290", "9F27":"80", "9F10":"0D10A50003020800C75900000000000000FF",
+          "9F34":"410302", "8A":"00"
+        </code>
+      </div>
+
+      <p>But don't get confused if it returns just "8A", the rest of the values were simply
+      echoed from the request, you should have those already.</p>
+
+      <p>EMV response fields are one of those things we don't control,
+      it's set up by the issuer.</p>
+
+      <p>Note that action is required after the response is received and
+      in some cases may require a technical reversal to be sent - most
+      notably when ARPC doesn't match against ARQC, see
+      <a href="https://en.wikipedia.org/wiki/EMV#Online_transaction_authorization">
+        https://en.wikipedia.org/wiki/EMV#Online_transaction_authorization
+      </a>
+      and subsequent steps (Online transaction authorization, Second card
+      action analysis, Issuer script processing)</p>
+
+
+      <h2 class="ui dividing header" id="bill">
+        Bill payment
+        <div class="sub header">
+          Customers paying their utility bills
+        </div>
+      </h2>
+
+      <p>
+        It allows customers to pay their bills using their customer_number
+        which is unique for each operator. A menu is built from operators array from configuration - merchant can select
+        operator by its name (those that have type set to 'bill'), then customer will enter its customer_number for that
+        operator and the amount he wish to pay.
+        If all is right, server will return current balance for a customer which is printed on receipt along
+        with currency and amount payed.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/bill-payment</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, operator_code, customer_number, amount, currency, systan)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>systan</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>client side ID of transaction, see the systan section</td>
+          </tr>
+          <tr>
+            <td>client_datetime</td>
+            <td>datetime</td>
+            <td>computed, 2016-04-19 15:02:49 +0200</td>
+            <td>current datetime on device with 24 hour clock and timezone offset</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each bill payment call</td>
+          </tr>
+          <tr>
+            <td>payment_method</td>
+            <td>string</td>
+            <td>card</td>
+            <td>selected from available payment_methods from config</td>
+          </tr>
+          <tr>
+            <td>payment_method_type</td>
+            <td>string</td>
+            <td>debit, credit, a_bank</td>
+            <td>submenu of payment_method, selected from available payment_method_types from config</td>
+          </tr>
+          <tr>
+            <td>operator_code</td>
+            <td>string</td>
+            <td>ae</td>
+            <td>selected from available operators that has type set to 'bill'</td>
+          </tr>
+          <tr>
+            <td>customer_number</td>
+            <td>string</td>
+            <td>123ABC</td>
+            <td>identifies customer for particular operator, entered into device</td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>integer</td>
+            <td>123345</td>
+            <td>amount payed, entered into device, sent in cents</td>
+          </tr>
+          <tr>
+            <td>currency</td>
+            <td>string</td>
+            <td>USD</td>
+            <td>default currency or selected from available currencies</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, customer_balance)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>incrementing value</td>
+            <td>unique identifier for transaction</td>
+          </tr>
+          <tr>
+            <td>customer_balance</td>
+            <td>integer</td>
+            <td>123400</td>
+            <td>current balance for customer, it is printed on receipt</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+      <h2 class="ui dividing header" id="bill-reversal">
+        Bill payment reversal
+        <div class="sub header">
+          Reversal of last bill payment
+        </div>
+      </h2>
+
+      <p>
+        It allows merchant to void last bill payment transaction. This is required if wrong amount is entered for bill payment.
+        Only cashier with manager role can perform this API call.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/reverse-bill-payment</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, original_id, systan, amount)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>systan</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>client side ID of transaction, see the systan section</td>
+          </tr>
+          <tr>
+            <td>client_datetime</td>
+            <td>datetime</td>
+            <td>computed, 2016-04-19 15:02:49 +0200</td>
+            <td>current datetime on device with 24 hour clock and timezone offset</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each reversal call, only manager cashier is authorized</td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>integer</td>
+            <td>123345</td>
+            <td>amount payed, entered into device, sent in cents</td>
+          </tr>
+          <tr>
+            <td>original_id</td>
+            <td>integer</td>
+            <td>123</td>
+            <td>id of the latest bill payment transaction which is stored on device</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, original_id)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>incrementing value</td>
+            <td>unique identifier for transaction</td>
+          </tr>
+          <tr>
+            <td>customer_balance</td>
+            <td>integer</td>
+            <td>123400</td>
+            <td>current balance for customer, it is printed on receipt</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h2 class="ui dividing header" id="voucher">
+        Voucher selling
+        <div class="sub header">
+          Customers buying vouchers
+        </div>
+      </h2>
+
+      <p>
+        It allows customers to buy credits for phones or such.
+        A menu is built from operators array from configuration - merchant can select
+        operator by its name (those that have type set to 'voucher'). Then second menu is built from voucher array -
+        it lists all available vouchers by their name for selected operator (with their amount and currency).
+        Operator and vouchers have 1..n relation, where code and operator_code are keys.
+        After voucher is selected and confirmed, request is sent to server. If all is right, server will return
+        value (code) for that voucher which is printed on receipt along with currency and amount payed.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/sell-voucher</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, name, systan)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>systan</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>client side ID of transaction, see the systan section</td>
+          </tr>
+          <tr>
+            <td>client_datetime</td>
+            <td>datetime</td>
+            <td>computed, 2016-04-19 15:02:49 +0200</td>
+            <td>current datetime on device with 24 hour clock and timezone offset</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each voucher sell call</td>
+          </tr>
+          <tr>
+            <td>payment_method</td>
+            <td>string</td>
+            <td>card</td>
+            <td>selected from available payment_methods from config</td>
+          </tr>
+          <tr>
+            <td>payment_method_type</td>
+            <td>string</td>
+            <td>debit, credit, a_bank</td>
+            <td>submenu of payment_method, selected from available payment_method_types from config</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>Chippie 25</td>
+            <td>name of the selected token</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, voucher_code)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>incrementing value</td>
+            <td>unique identifier for transaction</td>
+          </tr>
+          <tr>
+            <td>voucher_code</td>
+            <td>string</td>
+            <td>1234567890</td>
+            <td>value of the voucher, printed on receipt</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h2 class="ui dividing header" id="topup">
+        Account top-up
+        <div class="sub header">
+          Customers can load funds to their bank account
+        </div>
+      </h2>
+
+      <p>
+        It allows customers to load funds to account using their account_number.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/top-up</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, account_number, amount, currency, systan)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>systan</td>
+            <td>string</td>
+            <td>computed</td>
+            <td>client side ID of transaction, see the systan section</td>
+          </tr>
+          <tr>
+            <td>client_datetime</td>
+            <td>datetime</td>
+            <td>computed, 2016-04-19 15:02:49 +0200</td>
+            <td>current datetime on device with 24 hour clock and timezone offset</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each top-up call</td>
+          </tr>
+          <tr>
+            <td>account_number</td>
+            <td>string</td>
+            <td>123ABC</td>
+            <td>identifies customer account number, entered into device</td>
+          </tr>
+          <tr>
+            <td>amount</td>
+            <td>integer</td>
+            <td>123345</td>
+            <td>amount deposited, entered into device, sent in cents</td>
+          </tr>
+          <tr>
+            <td>currency</td>
+            <td>string</td>
+            <td>USD</td>
+            <td>default currency or selected from available currencies</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, account_balance)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>incrementing value</td>
+            <td>unique identifier for transaction</td>
+          </tr>
+          <tr>
+            <td>account_balance</td>
+            <td>integer</td>
+            <td>123400</td>
+            <td>current balance for account, it is printed on receipt</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h2 class="ui dividing header" id="services-settlement">
+        Services settlement
+        <div class="sub header">
+          Close current batch for bill payments and sold vouchers transactions and print statistics
+        </div>
+      </h2>
+
+      <p>
+        Only manager pin can perform this call. It is usually done once per day at the end of working time.
+        The server will return detailed statistics with total amounts and counts for each type of transactions with breakdown
+        of totals and counts per operators and cashiers.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/close-services-batch</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, services_batch_number)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each settlement call, only manager cashier is authorized</td>
+          </tr>
+          <tr>
+            <td>services_batch_number</td>
+            <td>number</td>
+            <td>123</td>
+            <td>current services batch number from device config</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, services_batch_number + 1)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>services_batch_number</td>
+            <td>number</td>
+            <td>124</td>
+            <td>new services batch number, value is old value incremented by 1</td>
+          </tr>
+          <tr>
+            <td>bill_totals</td>
+            <td>hash</td>
+            <td>{"card"=>10000, "cash"=>10000, "check"=>10000}</td>
+            <td>amounts of all bill payments for current batch per payment_method,
+              each entry is printed on receipt with total sum of all entries</td>
+          </tr>
+          <tr>
+            <td>voucher_totals</td>
+            <td>hash</td>
+            <td>{"card"=>10000, "cash"=>10000, "check"=>10000}</td>
+            <td>amounts of all sold vouchers for current batch per payment_method,
+              each entry is printed on receipt with total sum of all entries</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+      <h2 class="ui dividing header" id="cashiers">
+        Managing cashiers
+        <div class="sub header">
+          Generate cashiers, update their profile and pins
+        </div>
+      </h2>
+
+      <h3 class="ui dividing header" id="cashiers">
+        Create new cashier
+        <div class="sub header">
+          Create new cashier
+        </div>
+      </h3>
+
+      <p>For successful call a pin is returned from server and printed on screen. Before revealing the pin device should prompt with 'Reveal pin' dialog.</p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/create-cashier</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, full_name)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each create-cashier call, only manager cashier is authorized</td>
+          </tr>
+          <tr>
+            <td>full_name</td>
+            <td>string</td>
+            <td>Joe cashier</td>
+            <td>full_name of cashier selected from configuration cashiers array</td>
+          </tr>
+          <tr>
+            <td>manager</td>
+            <td>boolean</td>
+            <td>true, false</td>
+            <td>promote cashier to manager if set to true</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, pin)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>pin</td>
+            <td>string</td>
+            <td>0224</td>
+            <td>
+              pin for cashier which is printed on screen<br>
+              <strong>IMPORTANT</strong>:<br>
+              'Reveal pin' prompt must be confirmed on device before printing it on screen, pin should be visible only to person who owns the pin and that person will confirm the prompt
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h3 class="ui dividing header" id="cashiers">
+        Update cashier
+        <div class="sub header">
+          Update existing cashier
+        </div>
+      </h3>
+
+      <p>Promote cashier to manager role or deactivate them.</p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/update-cashier</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, full_name)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each update-cashier call, only manager cashier is authorized</td>
+          </tr>
+          <tr>
+            <td>full_name</td>
+            <td>string</td>
+            <td>Joe cashier</td>
+            <td>full_name of cashier selected on device form configuration cashiers array</td>
+          </tr>
+          <tr>
+            <td>manager</td>
+            <td>boolean</td>
+            <td>true, false</td>
+            <td>promote cashier to manager if set to true, option selected on device</td>
+          </tr>
+          <tr>
+            <td>active</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Disable cashier if selected; once cashier is disabled it will be removed from cashiers array from configuration call</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, manager)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+
+      <h3 class="ui dividing header" id="cashiers">
+        Change cashier's pin
+        <div class="sub header">
+          Change pin for existing cashier
+        </div>
+      </h3>
+
+      <p>
+        Request new pin from server for cashier.
+        For successful call a pin is returned from server and printed on screen.
+        Before revealing the pin device should prompt with 'Reveal pin' dialog.
+      </p>
+
+      <p>This message is POSTed to root + <label class="ui label">/api/change-cashier-pin</label> URL.</p>
+
+      <h3>Message specification</h3>
+
+      <p><strong>Request fields specification</strong></p>
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>api_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current API version</td>
+          </tr>
+          <tr>
+            <td>application_version</td>
+            <td>string</td>
+            <td>1.0.0.</td>
+            <td>current application version</td>
+          </tr>
+          <tr>
+            <td>access_token</td>
+            <td>string</td>
+            <td>qqleog6lk36kx7pp</td>
+            <td>used as terminal identifier for API calls</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, full_name)</td>
+            <td>message digest, see <a href="#digest">digest</a> field specification</td>
+          </tr>
+          <tr>
+            <td>cashier_pin</td>
+            <td>string</td>
+            <td>entered, 1234</td>
+            <td>cashier's pin, entered for each change-cashier-pin call, only manager cashier is authorized</td>
+          </tr>
+          <tr>
+            <td>full_name</td>
+            <td>string</td>
+            <td>Joe cashier</td>
+            <td>full_name of cashier selected on device form configuration cashiers array</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for valid request - 200 HTTP code</strong></p>
+
+
+      <table class="ui compact celled table">
+        <thead>
+          <tr>
+            <th>Variable name</th>
+            <th>Format</th>
+            <th>Possible value(s) or example</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="warning">
+            <td colspan="4">Echoed values: api_version, application_version</td>
+          </tr>
+          <tr>
+            <td>digest</td>
+            <td>string</td>
+            <td>Digest(terminal_key, access_token, pin)</td>
+            <td>
+              message digest, see <a href="#digest">digest</a> field specification,
+              calculate this digest on client and check it against this value
+            </td>
+          </tr>
+          <tr>
+            <td>pin</td>
+            <td>string</td>
+            <td>0224</td>
+            <td>
+              pin for cashier which is printed on screen<br>
+              <strong>IMPORTANT</strong>:<br>
+              'Reveal pin' prompt must be confirmed on device before printing it on screen, pin should be visible only to person who owns the pin and that person will confirm the prompt
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Response fields specification for invalid request - 422 HTTP code</strong></p>
+
+      <p>Same <a href="#error">format</a> as for any other messages</p>
+
+      <br>
+      <div class="ui divider"></div>
+      <p>&copy; Webteh Inc 2016</p>
+      <br>
+      <br>
+    </div>
+  </body>
+</html>
+
+

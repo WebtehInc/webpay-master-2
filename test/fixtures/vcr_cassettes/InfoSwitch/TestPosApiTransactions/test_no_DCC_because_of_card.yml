@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/merchant/v1.0/create-or-update-terminal
+    body:
+      encoding: UTF-8
+      string: '{"authenticity_token":"WebpayIntegrationPOS-test","secret":"damir!1Najbolji","name":"WebPay
+        Integration POS, test environment","tid":"TID","mid":"Terminal","attended":true,"location_indicator":"merchant","terminal_status":"active","load_balancer":"DummyBalancer","installment_options":"NullInstallments","transport_key":"tmk_test","generate_tmk":true,"default_acquirer_logid":"xml-sim","random":"WRyTuUfVItlqo8pH8MnuEg=="}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed 3310ba26f3de7caa793c4e41c0537561e27a8af4c000525de9df28a6f128a22b0e6c4a882a5ffcff7d90d11075784cc5b14e6ced0a604f085082d4eafaf71310
+        b1333f681179c4514bf1db4f61ae45bda40c3b0db0f69e6ec1c77f8511faac387251bf452c7870715dfca642083a62f8abddad4048fc57b2e47c6a6630b046c6 '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '786'
+    body:
+      encoding: UTF-8
+      string: '{"status":"updated","terminal_id":4,"authenticity_token":"WebpayIntegrationPOS-test","terminal_parameters":{"pos_transport_key":"tmk_test"},"load_balancer":"DummyBalancer","default_acquirer_logid":"xml-sim","installment_options":"NullInstallments","terminal_status":"active","created_at":"2017-01-16
+        11:49:51 -0400","updated_at":"2019-08-13 07:41:25 -0400","version":399,"tmk":"P7cgI10YuhQSBO9NO880mT+3ICNdGLoU","tmk_kcv":"96bc4d","tacqs":{"xml-sim":{"logid":"xml-sim","acquirer_logid":"xml-sim","tid":"3141592","mid":"31415926535898","name":"XML-SIM
+        Test Shop","city":"Willemstad","address":"Otrobanda 3141","country":"CW","mcc":"5411","postal_code":"4797","status":"no-change","created_at":"2017-01-16
+        11:49:51 -0400","updated_at":"2019-08-13 07:33:52 -0400","tacq_status":"active"}}}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:41:26 GMT
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/api/v1.0/prepare-transaction
+    body:
+      encoding: UTF-8
+      string: '{"__authenticity_token":"WebpayIntegrationPOS-test","transaction_type":"prepare","amount":10001,"currency":840,"created_at":"2019-08-13
+        13:41:26 +0200","systan":24841,"cardholder_authentication":"online pin","card_data_entry":"magstripe","pan":"5413330089600010","track2":"5413330089600010=17073011818341800000","expiration_date":"1707","pos_entry_mode":"012","pin_block":"1234567812345678","pin_block_format":"ISO0","exp_transaction_type":"purchase","dcc":true,"random":"VqQ34G/9TwyWDDo7Bzpa9w==","application_version":"Webpay","authenticity_token":"WebpayIntegrationPOS-test"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed WebpayIntegrationPOS-test 9a115298fab5257999577d87890c6a3717526447c2eddf4d6ce00ee7f0b4dfc987726934eaa8ec481a3ba922e956ccc56b689d709c30faf874d2c46cbeeb6b7d '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '778'
+    body:
+      encoding: UTF-8
+      string: '{"acquirer":"xml-sim","tacq":"xml-sim","mid":"31415926535898","tid":"3141592","authenticity_token":"WebpayIntegrationPOS-test","systan":24841,"dcc":{"acquirer":"xml-sim","mid":"31415926535898","tid":"3141592","authenticity_token":"WebpayIntegrationPOS-test","systan":24841,"request_id":2297,"response_id":2298,"reference_number":20726,"approval_code":"9739","acquirer_response_code":"05","response_code":"1054","response_message":"DCC:
+        unsupported conversion","status":"declined","transaction_type":"dcc","dcc_performed":false,"amount":10001,"currency":840,"billing_amount":10001,"billing_currency":840,"currency_exchange_margin":0,"currency_exchange_rate":1.0,"currency_exchange_provider":null},"installments":{"error":"Unsupported
+        installments: unsupported on this terminal"}}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:41:26 GMT
+recorded_with: VCR 5.0.0

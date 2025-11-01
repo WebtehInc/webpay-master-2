@@ -1,0 +1,148 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/merchant/v1.0/create-or-update-terminal
+    body:
+      encoding: UTF-8
+      string: '{"authenticity_token":"WebpayIntegrationPOS-TerminalApi","secret":"damir!1Najbolji","name":"WebPay
+        Integration POS, test environment","tid":"TID","mid":"Terminal","attended":true,"location_indicator":"merchant","terminal_status":"active","load_balancer":"DummyBalancer","installment_options":"NullInstallments","generate_tmk":true,"transport_key":"tmk_test","default_acquirer_logid":"xml-sim","__authenticity_token":"3310ba26f3de7caa793c4e41c0537561e27a8af4c000525de9df28a6f128a22b0e6c4a882a5ffcff7d90d11075784cc5b14e6ced0a604f085082d4eafaf71310","random":"LJDT1JsKkeQDOp+WAmyeaw=="}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed 3310ba26f3de7caa793c4e41c0537561e27a8af4c000525de9df28a6f128a22b0e6c4a882a5ffcff7d90d11075784cc5b14e6ced0a604f085082d4eafaf71310
+        2331a7affbaa752216d24b4db32076ab63f418d524dc020e637b02747ada485d6f16290d697fe5a5c41b260e9eeff0ae55a0073641e4f86cec0f7b8f98e4ae13 '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '791'
+    body:
+      encoding: UTF-8
+      string: '{"status":"updated","terminal_id":3,"authenticity_token":"WebpayIntegrationPOS-TerminalApi","terminal_parameters":{"pos_transport_key":"tmk_test"},"load_balancer":"DummyBalancer","default_acquirer_logid":"xml-sim","installment_options":"NullInstallments","terminal_status":"active","created_at":"2017-01-16
+        07:49:47 -0400","updated_at":"2019-08-13 07:27:04 -0400","version":9,"tmk":"6u7UmbMUY9stJsY5HjIjOuru1JmzFGPb","tmk_kcv":"9b6f53","tacqs":{"xml-sim":{"logid":"xml-sim","acquirer_logid":"xml-sim","tid":"3141592","mid":"31415926535898","name":"XML-SIM
+        Test Shop","city":"Willemstad","address":"Otrobanda 3141","country":"CW","mcc":"5411","postal_code":"4797","status":"no-change","created_at":"2017-01-16
+        07:49:47 -0400","updated_at":"2019-08-13 09:51:45 -0400","tacq_status":"active"}}}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:27:05 GMT
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/api/v1.0/configure-terminal
+    body:
+      encoding: UTF-8
+      string: '{"__authenticity_token":"WebpayIntegrationPOS-test","random":"bOA1lTqt2Ui09K/qTdQAkQ==","application_version":"Webpay"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed WebpayIntegrationPOS-test bcf1f1b0e782da0efebf475a49c2cc31f85de1e5ba6b8284e8ca51dedaccfd86ddecbfdbd4f19d907277815a545d51c5932f978fd4d96df7e3f09ddf0135d9f3 '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '363'
+    body:
+      encoding: UTF-8
+      string: '{"version":337,"pin_key":"oRy6FQVHsEGYjc+MZYI07KEcuhUFR7BB","pin_key_kcv":"b0697a","data_key":"dk5DnuHt9Ipy+8ir+sI/PHZOQ57h7fSK","data_key_kcv":"95ef9c","mac_key":"vwusEhDlyJNgtuxrs3QTEL8LrBIQ5ciT","mac_key_kcv":"4d3748","terminal_parameters":{"pos_transport_key":"tmk_test","pos_tmk":"GgWZW+6lOdqOEYJ8sfNGARoFmVvupTna"},"server_time":"2019-08-13
+        07:27:05 -0400"}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:27:05 GMT
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/mifare/v1.0/generate-master-key
+    body:
+      encoding: UTF-8
+      string: '{"__authenticity_token":"Terminal:uber1234","__secret":"/XED4xZQ8GC4dkN59Pr9SnMZLOGU8+M1GrHMOgqsverL1JVFROInW7oa27l+VJ6tgcou9xRDq9+ZFapfhrSt8w==","random":"6gfZAUaLVOeHX0lRivtyAQ==","application_version":"Webpay"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed Terminal:uber1234 2d4a56f131bbcd66ebdbc98e9a73b27b06aab001c9527e5b332f13c89a80ba4f5fccc55d78f636c03bdaa18f6ac7e83ea551ea603b055a9180948a63a9081494 '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '123'
+    body:
+      encoding: UTF-8
+      string: '{"cmk_host":"tmk_test:TwBRxZp1izLt377sFmzMGQ==","cmk_pos":"Vc+iXjDaHOxsQXgBlA3HMQ==","cmk_kcv":"905b09","status":"success"}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:27:05 GMT
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/mifare/v1.0/session-key-exchange
+    body:
+      encoding: UTF-8
+      string: '{"__authenticity_token":"Terminal:uber1234","__secret":"/XED4xZQ8GC4dkN59Pr9SnMZLOGU8+M1GrHMOgqsverL1JVFROInW7oa27l+VJ6tgcou9xRDq9+ZFapfhrSt8w==","card_challenge":"lolol","card_key":"tmk_test:TwBRxZp1izLt377sFmzMGQ==","random":"PcjOKvJZHLTdfP19B5R1/w==","application_version":"Webpay"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed Terminal:uber1234 86061db7bfb17d28ce1f700ca59fcffa3b5581e2af9a58ba32b04355f283adc0f58993383c9d328d92e0f7a750f6a89cc68de3db60b0b50785caea3e69eab13e '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '449'
+    body:
+      encoding: UTF-8
+      string: '{"error":"Gateway::Crypto::ServerError: exception class org.jpos.security.SMException:
+        com.infosig.crypto.mifare.MifareCryptoException: com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException:
+        You must initialize the xml-security library correctly before you use it.
+        Call the static method \"com.sun.org.apache.xml.internal.security.Init.init();\"
+        to do that before you use any functionality from that library.","status":"error"}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:27:06 GMT
+- request:
+    method: post
+    uri: http://tpsb-switch:17403/mifare/v1.0/session-key-exchange
+    body:
+      encoding: UTF-8
+      string: '{"__authenticity_token":"Terminal:uber1234","__secret":"/XED4xZQ8GC4dkN59Pr9SnMZLOGU8+M1GrHMOgqsverL1JVFROInW7oa27l+VJ6tgcou9xRDq9+ZFapfhrSt8w==","card_challenge":"nXh0F2yE6etuR//jPvgGNA==","card_key":"tmk_test:TwBRxZp1izLt377sFmzMGQ==","random":"zpHsgzcQDTUKZzrandYEpA==","application_version":"Webpay"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.4
+      Authorization:
+      - 'InfoSwitch-HMAC-SHA512-fixed Terminal:uber1234 7de3257e188e03f5628e10c0e1b6028ac1b5714928fbc6f1de5028c572c6b7e03261d16cc3cd0f46786f3ba117d870c47c6e1427b225536d0e152d159200ae71 '
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      content-type:
+      - application/json
+      connection:
+      - close
+      content-length:
+      - '196'
+    body:
+      encoding: UTF-8
+      string: '{"csk_pos":"wagIWxgeOFUm/SqCpAFd6w==","csk_host":"tmk_test:gTS4XiB2zbuhRVm+t+6NfA==","card_challenge_response":"qxejmYwdlt/ZulFHXk6g2hDvzw9uZ+TmtxRGqCIqYN0=","csk_kcv":"60e071","status":"success"}'
+    http_version: 
+  recorded_at: Tue, 13 Aug 2019 11:27:07 GMT
+recorded_with: VCR 5.0.0

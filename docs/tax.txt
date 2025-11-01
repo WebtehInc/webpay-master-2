@@ -1,0 +1,62 @@
+POST {{host}}/api/tax/confirm-reference/request
+{
+    "platformId": "3306290C-15E6-4757-BE89-A37A4B5FB34b",
+    "requestTime": "2025-01-30 09:20:03",
+    "paymentRef": "31201810010471"
+}
+
+Ok:
+{
+    "responseTime": "2025-03-09 14:04:10",
+    "platformId": "3306290C-15E6-4757-BE89-A37A4B5FB34b",
+    "referenceId": "252B6FE6-10FD-EF11-B879-549F350A9EA9",
+    "customerName": "XTPUTCP YXKGI VICRFETLEZ",
+    "paymentType": "Assessment/Aanslag",
+    "paymentRef": "31201810010471",
+    "responseDescription": "OK",
+    "customerId": "171476748",
+    "responseValue": "200",
+    "paymentPeriod": "2018-13",
+    "taxType": "AFS"
+}
+
+Error:
+{
+    "errorDescription": "Not unique \"29f0bc22-cfe7-4c60-920a-1dab98b9b167\"",
+    "responseTime": "2025-03-09 14:48:53",
+    "errorCode": 807,
+    "platformId": "A4030216-E65E-4F00-BE33-A9B7B54B62E0",
+    "referenceId": "B4CA7F25-17FD-EF11-B879-549F350A9EA9",
+    "responseDescription": "Bad Request",
+    "responseValue": "400"
+}
+
+POST {{host}}/api/tax/payment/request
+{
+    "platformId": "3306290C-15E6-4757-BE89-A37A4B5FB34b",
+    "requestTime": "2025-01-30 11:33:03",
+    "paymentRef": "31201810010471",
+    "paymentAmount": "1000"
+}
+
+Ok:
+{
+    "responseDescription": "OK",
+    "paymentId": "27C2B802-11FD-EF11-B879-549F350A9EA9",
+    "responseTime": "2025-03-09 14:04:58.373",
+    "responseValue": "200",
+    "platformId": "3306290C-15E6-4757-BE89-A37A4B5FB34b",
+    "paymentAmount": "1000",
+    "paymentRef": "31201810010471"
+}
+ 
+ Error:
+ {
+    "errorDescription": "No valid Confirmation found",
+    "responseDescription": "Bad Request",
+    "paymentId": "8ADBA441-17FD-EF11-B879-549F350A9EA9",
+    "responseTime": "2025-03-09 14:49:40.907",
+    "errorCode": 801,
+    "responseValue": "400",
+    "platformId": "3306290C-15E6-4757-BE89-A37A4B5FB34b"
+}

@@ -1,0 +1,6 @@
+[Unit]
+StopWhenUnneeded=true
+Wants=webpay-web.target
+
+[Install]
+WantedBy=multi-user.target

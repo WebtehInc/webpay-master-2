@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+  </head>
+
+  <body>
+    <div class="ui container" style="margin: 1em;">
+
+      <h2 class="ui dividing header">
+        <div class="content">
+          Voucher low stock notification for account #<%= account[:account_number] %>
+          <div class="sub header">
+            <%= WebPay.opts[:bank_name] %> <%= WebPay.opts[:app_name] %>
+          </div>
+        </div>
+      </h2>
+
+      <ul>
+        <li>Account: <strong><%= account[:title] %> #<%= account[:account_number] %></strong></li>
+        <li>Product: <strong><%= voucher_stock[:name] %></strong></li>
+        <li>Quantity: <strong><%= voucher_stock[:quantity] -1 %></strong></li>
+        <li>Last purchase quantity: <strong><%= voucher_stock[:last_purchase_quantity] %></strong></li>
+        <li>Last purchase at: <strong><%= voucher_stock[:last_purchase_at] %></strong></li>
+      </ul>
+
+    </div>
+  </body>
+
+</html>
+
+

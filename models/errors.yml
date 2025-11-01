@@ -1,0 +1,57 @@
+en:
+  errors:
+    alpha?: "must contain only alphabetic characters"
+    numeric?: "must contain only digits"
+    email?: "must look like an email"
+    unique?: "has already been taken"
+    strong?: "must be a strong password (choose a lowercase letter, an uppercase letter, a digit and a special character)"
+    valid?: "is invalid"
+    checked?: "must be checked"
+    older_than_18?: "must be 18 or older"
+
+    # positive numbers
+    positive?: "must be filled"
+
+    # transfers
+    available_funds?: "not enough funds"
+    valid_source_account?: "unknown account"
+    valid_target_account?: "unknown target account"
+
+    # limits
+    under_count_limit? : "number of transactions limit exceeded"
+    under_volume_limit? : "transactions volume limit exceeded"
+    target_account_under_count_limit? : "number of transactions limit exceeded for target account"
+    target_account_under_volume_limit? : "transactions volume limit exceeded for target account"
+
+    # pos/services
+    working_time?: "after hours, store is closed"
+    enabled_service?: "service is disabled"
+    valid_voucher?: "unknown voucher"
+    on_stock?: "out of stock"
+    valid_customer?: "unknown account"
+    active_customer?: "account is disabled"
+    valid_operator?: "unknown or disabled operator"
+    over_operator_min_amount?: "under operator minimum amount"
+    valid_terminal?: "unknown or disabled terminal"
+    valid_cashier?: "invalid cashier pin"
+    valid_manager?: "invalid manager pin"
+    valid_reference?: "invalid reference"
+    not_empty_batch?: "batch is empty"
+    valid_payment_method_type?: "payment type mismatch"
+    under_credit_limit?: "credit limit exceeded"
+    over_min_amount?: "under minimum amount"
+    below_max_amount?: "over maximum amount"
+    valid_digest?: "is invalid"
+    valid_currency?: "is invalid"
+    valid_pin?: "is invalid"
+    exists?: "cannot be found"
+    valid_quantity?: "invalid quantity"
+
+    # card authorization
+    valid_card_data_amount?: "invalid card_data amount"
+    valid_card_data_currency?: "invalid card_data currency"
+
+    # issuing
+    valid_card?: "is invalid"
+    valid_card_serial?: "is invalid"
+    valid_card_challenge?: "is invalid"

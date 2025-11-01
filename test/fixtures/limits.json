@@ -1,0 +1,78 @@
+[
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill",
+  "amount":210,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill",
+  "amount":210,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+
+
+
+
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"voucher",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"voucher",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"voucher",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"voucher",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+
+
+
+
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume", "debit_or_credit":"debit"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume", "debit_or_credit":"debit"},
+
+
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"credit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume", "debit_or_credit":"credit"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"credit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume", "debit_or_credit":"credit"},
+
+
+
+
+
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid",
+  "amount":21000,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+
+
+
+
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"sale_wallet",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"sale_wallet",
+  "amount":210,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"},
+
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"sale_wallet",
+  "amount":3,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"count", "debit_or_credit":"debit"},
+{"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"sale_wallet",
+  "amount":210,"currency":"USD","active":true,"period":1,"period_type":"day", "type":"volume"}
+]

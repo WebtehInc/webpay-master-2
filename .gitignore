@@ -1,0 +1,61 @@
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/test/tmp/
+/test/version_tmp/
+/tmp/
+/log/
+/uploads/
+/exports/
+.DS_Store
+.irb-history
+.env
+.env.development
+.env.production
+import.log
+log
+/tmp
+/.env.settings/fiserv_header.json
+/find_me_here/
+/public/static/download/
+/downloads
+
+# ignores for spa updater
+/public/index.html
+/public/static/main.*
+/public/static/archive/*.js
+/spa/*.js
+
+# editor files
+.idea
+*.swp
+
+# installed gems in production
+vendor/bundle
+
+# databases
+db/*.db
+
+
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+
+## Environment normalisation:
+/.bundle/
+/lib/bundler/man/
+
+# editor files
+.vscode
+
+# seeds
+/db/app_data/operators.json
+/db/app_data/products.json
+
+# other
+tmp.rb

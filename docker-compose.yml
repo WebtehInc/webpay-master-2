@@ -1,0 +1,80 @@
+version: "3.9"
+services:
+  development:
+    # build image with: docker-compose build .
+    build:
+      context: . 
+    volumes:      
+      - .:/workbench/webpay
+    stop_grace_period: 1s
+    command:
+      - bash
+      - -l
+      - -c 
+      - |
+        sleep 5
+        cp .env.settings/fiserv_header.json.example .env.settings/fiserv_header.json
+        WP_ENV=test bundle exec rake db:migrate        
+        /bin/sh -c 'while sleep 1000; do :; done'      
+    environment:       
+      # ability to run psql command
+      - PGPASSWORD=test
+      - PGUSER=test
+      - PGHOST=postgres
+      # WEBPAY CONFIG
+      - WP_ENV=development
+      # databases
+      - WP_TEST_DATABASE_URL=postgres://postgres:postgres@postgres:5432/webpay_test     
+      - WP_DEV_DATABASE_URL=postgres://postgres:postgres@postgres:5432/webpay_dev
+      # memcached
+      - MEMCACHED_URL=memcached:11211
+      # SMTP
+      - WP_SMTP_HOST=localhost
+      - WP_SMTP_PORT=1025
+      # SPA domain
+      - WP_SPA_HOST_URL='http://webpay-spa:2222/#!'
+      # OTP
+      - OTP_TTL=300
+      # JWT
+      - JWT_KEY=Wps3cretK3y
+      - JWT_TTL=1800
+      # mobile app
+      - MOBILE_KEY=WpM0Bk3yscrt
+      # settings
+      - APP_NAME=Pagafasil
+      - BANK_NAME=PSB bank
+      - DEFAULT_CURENCY=ANG
+      # mailer
+      # ERROR_EMAIL=dosadnizub@gmail.com
+      ########## SERVICES ##########
+      # core bank service; i.e. fiserv
+      - CORE_BANK_SERVICE=fiserv
+      # crypto/switch
+      - ISO_SWITCH_URL=http://jsecmodule.herokuapp.com
+      # INFOSWITCH_URL=http://172.22.40.10:5002
+      # INFOSWITCH_URL=http://localhost:19403
+      - INFOSWITCH_URL=http://tpsb-switch:17403
+      # crypto
+      - CRYPTO_INTERFACE=crypto
+      # pagatinu
+      # mock/live
+      - PAGATINU_CLIENT=mock
+      - PAGATINU_URL=http://pagatinu:17300/GatewayServiceASP.asmx
+      # fiserv
+      # NOTE: put header settings in /.env.settings/fiserv_header.json
+      # mock/live
+      - FISERV_CLIENT=live
+      - FISERV_URL=http://psb-fiserv:17301/CRG_TESTCM/CRG.aspx
+      # should be of 'DD' type, i.e. current account
+      - FISERV_WALLET_ACCOUNT_ID=9900003590 
+  postgres:
+    image: postgres:9.5    
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/pgtmpfs
+      - POSTGRES_DB=webpay_test
+    tmpfs:
+      - /pgtmpfs
+  memcached:
+    image: memcached:1.6.9    

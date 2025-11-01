@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+  </head>
+
+  <body>
+    <div class="ui container" style="margin: 1em;">
+
+      <h2 class="ui dividing header">
+        <div class="content">
+          Transaction notification for account #<%= account[:account_number] %>
+          <div class="sub header">
+            <%= WebPay.opts[:bank_name] %> <%= WebPay.opts[:app_name] %>
+          </div>
+        </div>
+      </h2>
+
+      <p>Transaction details:</p>
+
+      <ul>
+        <li>Account: <strong><%= account[:title] %> #<%= account[:account_number] %></strong></li>
+        <li>Id: <strong><%= transaction.id %></strong></li>
+        <li>Type: <strong><%= "#{ALL_TRANSACTION_TYPES[transaction.transaction_type.to_sym]}" %></strong></li>
+        <li>Amount: <strong><%= transaction.amount/100.0 %> <%= transaction.currency %></strong></li>
+        <li>Time: <strong><%= transaction.created_at %></strong></li>
+        <li>Status: <strong><%= transaction.status.capitalize %></strong></li>
+      </ul>
+
+    </div>
+  </body>
+
+</html>
+
+

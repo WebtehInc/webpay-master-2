@@ -1,0 +1,25 @@
+<strong>Exception:</strong>
+<pre>
+<%= "#{e.class}: #{e.message}" %>
+</pre>
+
+<strong>Backtrace</strong>
+<pre>
+<%= "#{e.backtrace.join("\n")}" %>
+</pre>
+
+<strong>Path:</strong>
+<pre>
+<%= "#{context.request.path}" %>
+</pre>
+
+<strong>Params</strong>
+<pre>
+<%= "#{Utils.format_hash[context.request.params.mask_sensitive_attrs]}" %>
+</pre>
+
+
+<strong>ENV:</strong>
+<pre>
+<%= "#{Utils.format_hash[context.env.mask_sensitive_attrs('roda.json_params')]}" %>
+</pre>

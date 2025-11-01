@@ -1,0 +1,21 @@
+[Unit]
+StopWhenUnneeded=true
+
+[Service]
+User=webteh
+WorkingDirectory=/opt/webpay
+Environment=PORT=5000
+Environment=WP_ENV=development
+Environment=WP_PROD_DATABASE_URL=sqlite://db/webpay-prod.db
+Environment=WP_DEV_DATABASE_URL=sqlite://db/webpay-dev.db
+Environment=WP_TEST_DATABASE_URL=sqlite://db/webpay-test.db
+Environment=WP_SMTP_HOST=localhost
+Environment=WP_SMTP_PORT=1025
+Environment=WP_SPA_HOST_URL=http://webpay-spa:2222/#!
+ExecStart=/bin/bash -lc '/home/webteh/.rvm/gems/ruby-2.2.4/bin/bundle exec puma --dir /opt/webpay -v -t 1:4 -b tcp://0.0.0.0:4444'
+Restart=always
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+KillMode=process

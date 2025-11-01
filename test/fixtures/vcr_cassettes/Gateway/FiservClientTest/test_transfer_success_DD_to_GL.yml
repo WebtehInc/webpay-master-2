@@ -1,0 +1,294 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://psb-fiserv:17301/CRG_TESTCM/CRG.aspx
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <IFX>
+          <SignonRq>
+            <SignonPswd>
+              <SignonRole>CSR</SignonRole>
+              <CustId>
+                <SPName>FiservICBS</SPName>
+                <CustLoginId>WEBTEH</CustLoginId>
+              </CustId>
+              <CustPswd>
+                <CryptType>NONE</CryptType>
+                <Pswd>webteh</Pswd>
+              </CustPswd>
+              <GenSessKey>0</GenSessKey>
+            </SignonPswd>
+            <ClientDt>
+              <Year>2008</Year>
+              <Month>3</Month>
+              <Day>21</Day>
+            </ClientDt>
+            <ClientApp>
+              <Org>Fiserv</Org>
+              <Name>WebTech</Name>
+              <Version>0.1</Version>
+              <ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey>
+            </ClientApp>
+            <ComputerId>172.254.5.122</ComputerId>
+            <InstitutionCode>PSBNA</InstitutionCode>
+          </SignonRq>
+          <EnvironmentInfo>
+            <EnvironmentName>Pagafasil</EnvironmentName>
+          </EnvironmentInfo>
+          <BankSvcRq>
+            <RqUID>8e480291-397f-4aee-9353-68b11fe9f33a</RqUID>
+            <SPName>FiservICBS</SPName>
+            <AcctInqRq>
+              <RqUID>a14fcd4b-0f6e-4b4f-b606-867a199a520f</RqUID>
+              <IncBal>1</IncBal>
+              <DepAcctId>
+                <AcctId>9900003588</AcctId>
+                <AcctType>DD</AcctType>
+              </DepAcctId>
+            </AcctInqRq>
+          </BankSvcRq>
+        </IFX>
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Content-Type:
+      - text/xml; charset=utf-8
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      cache-control:
+      - private
+      content-type:
+      - text/html; charset=utf-8
+      server:
+      - Microsoft-IIS/7.5
+      set-cookie:
+      - ASP.NET_SessionId=4ysayz2ubkpn21r1zho3i523; path=/; HttpOnly
+      x-aspnet-version:
+      - 2.0.50727
+      x-powered-by:
+      - ASP.NET
+      date:
+      - Thu, 02 Mar 2017 13:36:30 GMT
+      connection:
+      - close
+      content-length:
+      - '3860'
+    body:
+      encoding: UTF-8
+      string: "<IFX><GeneralStatus><StatusCode>0</StatusCode><StatusLevel>IFX</StatusLevel><StatusDesc>The
+        request was processed successfully.</StatusDesc></GeneralStatus><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>126AC1CA-F2F2-42E6-A14F-FAF3D51FD307</SupportUID></Status><SignonRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>E483405A-3040-453A-B1AC-AFBDE91A67D3</SupportUID></Status><SignonRole>CSR</SignonRole><CustId><SPName>FiservICBS</SPName><CustLoginId>WEBTEH</CustLoginId></CustId><GenSessKey>0</GenSessKey><ClientDt><Year>2008</Year><Month>3</Month><Day>21</Day></ClientDt><CustLangPref
+        /><ClientApp><Org>Fiserv</Org><Name>WebTech</Name><Version>0.1</Version><ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey></ClientApp><ServerDt><Year>2017</Year><Month>3</Month><Day>2</Day><Hour>9</Hour><Minute>36</Minute><Second>30</Second><Fraction>789000</Fraction><UTCOffset>-240</UTCOffset></ServerDt><Language>en-US</Language><PersonName><LastName>Webteh
+        Pagafasil</LastName><FirstName>Webteh</FirstName></PersonName></SignonRs><EnvironmentInfo><EnvironmentName>Pagafasil</EnvironmentName></EnvironmentInfo><BankSvcRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>8E480291-397F-4AEE-9353-68B11FE9F33A</SupportUID></Status><RqUID>8e480291-397f-4aee-9353-68b11fe9f33a</RqUID><SPName>FiservICBS</SPName><Version>10.1.0.39</Version><AcctInqRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>936AB52F-B314-4EA3-B758-0A43E2F0CEFC</SupportUID></Status><RqUID>a14fcd4b-0f6e-4b4f-b606-867a199a520f</RqUID><DepAcctId><AcctId>9900003588</AcctId><AcctType>DD</AcctType></DepAcctId><IncBal>1</IncBal><LastTrnDt><Year>2016</Year><Month>10</Month><Day>04</Day></LastTrnDt><LastStmtDt><Year>2016</Year><Month>09</Month><Day>07</Day></LastStmtDt><AcctBal><BalType>Current</BalType><CurAmt><Amt>280.95</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>Avail</BalType><CurAmt><Amt>280.95</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>Ledger</BalType><CurAmt><Amt>289.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>MinLedger</BalType><CurAmt><Amt>280.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>AvgLedger</BalType><CurAmt><Amt>466.25</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedger</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedgerLast</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedgerPrev</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>AvailLOC</BalType><CurAmt><Amt>280.95</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>PastDue</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><DepAcctRec><LastDepDt><Year>2016</Year><Month>10</Month><Day>04</Day></LastDepDt><LastDepCurAmt><Amt>4.04</Amt><CurCode>ANG</CurCode></LastDepCurAmt><IntPmt><LastIntPmtDt><Year>2016</Year><Month>09</Month><Day>07</Day></LastIntPmtDt><NextIntPmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></NextIntPmtDt><Freq>NoFrequency</Freq></IntPmt><OpenDt><Year>2016</Year><Month>09</Month><Day>07</Day></OpenDt><NoticeDt><Year>0000</Year><Month>00</Month><Day>00</Day></NoticeDt><ContactDt><Year>2016</Year><Month>10</Month><Day>04</Day></ContactDt><PrevOneStmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></PrevOneStmtDt><PrevTwoStmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></PrevTwoStmtDt></DepAcctRec></AcctInqRs></BankSvcRs></IFX>"
+    http_version: 
+  recorded_at: Thu, 02 Mar 2017 13:41:37 GMT
+- request:
+    method: post
+    uri: http://psb-fiserv:17301/CRG_TESTCM/CRG.aspx
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <IFX>
+          <SignonRq>
+            <SignonPswd>
+              <SignonRole>CSR</SignonRole>
+              <CustId>
+                <SPName>FiservICBS</SPName>
+                <CustLoginId>WEBTEH</CustLoginId>
+              </CustId>
+              <CustPswd>
+                <CryptType>NONE</CryptType>
+                <Pswd>webteh</Pswd>
+              </CustPswd>
+              <GenSessKey>0</GenSessKey>
+            </SignonPswd>
+            <ClientDt>
+              <Year>2008</Year>
+              <Month>3</Month>
+              <Day>21</Day>
+            </ClientDt>
+            <ClientApp>
+              <Org>Fiserv</Org>
+              <Name>WebTech</Name>
+              <Version>0.1</Version>
+              <ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey>
+            </ClientApp>
+            <ComputerId>172.254.5.122</ComputerId>
+            <InstitutionCode>PSBNA</InstitutionCode>
+          </SignonRq>
+          <EnvironmentInfo>
+            <EnvironmentName>Pagafasil</EnvironmentName>
+          </EnvironmentInfo>
+          <MonSvcRq>
+            <RqUID>61eb8103-7662-422b-949d-66716e80e8e8</RqUID>
+            <SPName>FiservICBS</SPName>
+            <GLAppXferAddRq>
+              <RqUID>9a57e241-8823-45bc-a1f9-bf9d3881ea50</RqUID>
+              <TrnCommon>
+                <TrnCode>51CG</TrnCode>
+                <SeqId type="integer">581733604517</SeqId>
+              </TrnCommon>
+              <XferInfo>
+                <CurAmt>
+                  <Amt type="float">0.01</Amt>
+                  <CurCode>ANG</CurCode>
+                </CurAmt>
+                <DepAcctIdFrom>
+                  <AcctId>9900003588</AcctId>
+                  <AcctType>DD</AcctType>
+                </DepAcctIdFrom>
+                <GLAcctIdTo>
+                  <AcctId>270900000006</AcctId>
+                  <AcctType>GL</AcctType>
+                  <CostCenter>00001</CostCenter>
+                  <CurCode>000</CurCode>
+                </GLAcctIdTo>
+              </XferInfo>
+            </GLAppXferAddRq>
+          </MonSvcRq>
+        </IFX>
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Content-Type:
+      - text/xml; charset=utf-8
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      cache-control:
+      - private
+      content-type:
+      - text/html; charset=utf-8
+      server:
+      - Microsoft-IIS/7.5
+      set-cookie:
+      - ASP.NET_SessionId=5cdvuobzbs051a454m1atvai; path=/; HttpOnly
+      x-aspnet-version:
+      - 2.0.50727
+      x-powered-by:
+      - ASP.NET
+      date:
+      - Thu, 02 Mar 2017 13:36:31 GMT
+      connection:
+      - close
+      content-length:
+      - '2660'
+    body:
+      encoding: UTF-8
+      string: "<IFX><GeneralStatus><StatusCode>0</StatusCode><StatusLevel>IFX</StatusLevel><StatusDesc>The
+        request was processed successfully.</StatusDesc></GeneralStatus><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>9583E03E-2FD7-4DFD-949A-7DC227634067</SupportUID></Status><SignonRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>885FC49F-F6B8-4C06-AF3B-9D4519CB874C</SupportUID></Status><SignonRole>CSR</SignonRole><CustId><SPName>FiservICBS</SPName><CustLoginId>WEBTEH</CustLoginId></CustId><GenSessKey>0</GenSessKey><ClientDt><Year>2008</Year><Month>3</Month><Day>21</Day></ClientDt><CustLangPref
+        /><ClientApp><Org>Fiserv</Org><Name>WebTech</Name><Version>0.1</Version><ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey></ClientApp><ServerDt><Year>2017</Year><Month>3</Month><Day>2</Day><Hour>9</Hour><Minute>36</Minute><Second>31</Second><Fraction>414000</Fraction><UTCOffset>-240</UTCOffset></ServerDt><Language>en-US</Language><PersonName><LastName>Webteh
+        Pagafasil</LastName><FirstName>Webteh</FirstName></PersonName></SignonRs><EnvironmentInfo><EnvironmentName>Pagafasil</EnvironmentName></EnvironmentInfo><MonSvcRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>61EB8103-7662-422B-949D-66716E80E8E8</SupportUID></Status><RqUID>61eb8103-7662-422b-949d-66716e80e8e8</RqUID><SPName>FiservICBS</SPName><Version>10.1.0.39</Version><GLAppXferAddRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>F35A0908-8990-4876-9418-3F516332890C</SupportUID></Status><RqUID>9a57e241-8823-45bc-a1f9-bf9d3881ea50</RqUID><ResponseCode>Accepted</ResponseCode><XferFromAcctInfo><DepAcctIdFrom><AcctId>9900003588</AcctId><AcctType>DD</AcctType></DepAcctIdFrom><Addr><FullName>Mr
+        Pagafasil Tester</FullName><Addr1>Kaya Paga 2</Addr1><Addr2>Willemstad</Addr2><Addr3>Curacao</Addr3><Addr4
+        /></Addr><AcctBal><BalType>Current</BalType><Amt>280.94</Amt></AcctBal><AcctBal><BalType>Avail</BalType><Amt>280.94</Amt></AcctBal></XferFromAcctInfo><XferToAcctInfo><GLAcctIdTo><AcctId>270900000006</AcctId><AcctType>GL</AcctType><CostCenter>00001</CostCenter><CurCode>000</CurCode></GLAcctIdTo><Addr><FullName>NO
+        NAME</FullName><Addr1 /><Addr2 /><Addr3 /><Addr4 /></Addr><AcctBal><BalType>Current</BalType><Amt>0.00</Amt></AcctBal><AcctBal><BalType>Avail</BalType><Amt>0.00</Amt></AcctBal></XferToAcctInfo></GLAppXferAddRs></MonSvcRs></IFX>"
+    http_version: 
+  recorded_at: Thu, 02 Mar 2017 13:41:37 GMT
+- request:
+    method: post
+    uri: http://psb-fiserv:17301/CRG_TESTCM/CRG.aspx
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <IFX>
+          <SignonRq>
+            <SignonPswd>
+              <SignonRole>CSR</SignonRole>
+              <CustId>
+                <SPName>FiservICBS</SPName>
+                <CustLoginId>WEBTEH</CustLoginId>
+              </CustId>
+              <CustPswd>
+                <CryptType>NONE</CryptType>
+                <Pswd>webteh</Pswd>
+              </CustPswd>
+              <GenSessKey>0</GenSessKey>
+            </SignonPswd>
+            <ClientDt>
+              <Year>2008</Year>
+              <Month>3</Month>
+              <Day>21</Day>
+            </ClientDt>
+            <ClientApp>
+              <Org>Fiserv</Org>
+              <Name>WebTech</Name>
+              <Version>0.1</Version>
+              <ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey>
+            </ClientApp>
+            <ComputerId>172.254.5.122</ComputerId>
+            <InstitutionCode>PSBNA</InstitutionCode>
+          </SignonRq>
+          <EnvironmentInfo>
+            <EnvironmentName>Pagafasil</EnvironmentName>
+          </EnvironmentInfo>
+          <BankSvcRq>
+            <RqUID>4ce50dc7-e86b-4b4b-8032-8f04008caaaa</RqUID>
+            <SPName>FiservICBS</SPName>
+            <AcctInqRq>
+              <RqUID>0d52a259-178a-4824-ba18-293e2c002960</RqUID>
+              <IncBal>1</IncBal>
+              <DepAcctId>
+                <AcctId>9900003588</AcctId>
+                <AcctType>DD</AcctType>
+              </DepAcctId>
+            </AcctInqRq>
+          </BankSvcRq>
+        </IFX>
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Content-Type:
+      - text/xml; charset=utf-8
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      cache-control:
+      - private
+      content-type:
+      - text/html; charset=utf-8
+      server:
+      - Microsoft-IIS/7.5
+      set-cookie:
+      - ASP.NET_SessionId=tsvofs4522yukd45dpemmtnq; path=/; HttpOnly
+      x-aspnet-version:
+      - 2.0.50727
+      x-powered-by:
+      - ASP.NET
+      date:
+      - Thu, 02 Mar 2017 13:36:31 GMT
+      connection:
+      - close
+      content-length:
+      - '3860'
+    body:
+      encoding: UTF-8
+      string: "<IFX><GeneralStatus><StatusCode>0</StatusCode><StatusLevel>IFX</StatusLevel><StatusDesc>The
+        request was processed successfully.</StatusDesc></GeneralStatus><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>9D8E37F9-3790-437E-B2B1-105484B0A788</SupportUID></Status><SignonRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>1E1A8854-4E1D-44A9-94C4-7A7D77EFEC19</SupportUID></Status><SignonRole>CSR</SignonRole><CustId><SPName>FiservICBS</SPName><CustLoginId>WEBTEH</CustLoginId></CustId><GenSessKey>0</GenSessKey><ClientDt><Year>2008</Year><Month>3</Month><Day>21</Day></ClientDt><CustLangPref
+        /><ClientApp><Org>Fiserv</Org><Name>WebTech</Name><Version>0.1</Version><ClientAppKey>PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS</ClientAppKey></ClientApp><ServerDt><Year>2017</Year><Month>3</Month><Day>2</Day><Hour>9</Hour><Minute>36</Minute><Second>31</Second><Fraction>914000</Fraction><UTCOffset>-240</UTCOffset></ServerDt><Language>en-US</Language><PersonName><LastName>Webteh
+        Pagafasil</LastName><FirstName>Webteh</FirstName></PersonName></SignonRs><EnvironmentInfo><EnvironmentName>Pagafasil</EnvironmentName></EnvironmentInfo><BankSvcRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>4CE50DC7-E86B-4B4B-8032-8F04008CAAAA</SupportUID></Status><RqUID>4ce50dc7-e86b-4b4b-8032-8f04008caaaa</RqUID><SPName>FiservICBS</SPName><Version>10.1.0.39</Version><AcctInqRs><Status><StatusCode>0</StatusCode><Severity>Info</Severity><StatusDesc>The
+        request was processed successfully.</StatusDesc><SupportUID>3AC38187-BF61-43FA-B176-E82FE6ABC23F</SupportUID></Status><RqUID>0d52a259-178a-4824-ba18-293e2c002960</RqUID><DepAcctId><AcctId>9900003588</AcctId><AcctType>DD</AcctType></DepAcctId><IncBal>1</IncBal><LastTrnDt><Year>2016</Year><Month>10</Month><Day>04</Day></LastTrnDt><LastStmtDt><Year>2016</Year><Month>09</Month><Day>07</Day></LastStmtDt><AcctBal><BalType>Current</BalType><CurAmt><Amt>280.94</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>Avail</BalType><CurAmt><Amt>280.94</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>Ledger</BalType><CurAmt><Amt>289.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>MinLedger</BalType><CurAmt><Amt>280.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>AvgLedger</BalType><CurAmt><Amt>466.25</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedger</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedgerLast</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>OpeningLedgerPrev</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>AvailLOC</BalType><CurAmt><Amt>280.94</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><AcctBal><BalType>PastDue</BalType><CurAmt><Amt>0.00</Amt><CurCode>ANG</CurCode></CurAmt></AcctBal><DepAcctRec><LastDepDt><Year>2016</Year><Month>10</Month><Day>04</Day></LastDepDt><LastDepCurAmt><Amt>4.04</Amt><CurCode>ANG</CurCode></LastDepCurAmt><IntPmt><LastIntPmtDt><Year>2016</Year><Month>09</Month><Day>07</Day></LastIntPmtDt><NextIntPmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></NextIntPmtDt><Freq>NoFrequency</Freq></IntPmt><OpenDt><Year>2016</Year><Month>09</Month><Day>07</Day></OpenDt><NoticeDt><Year>0000</Year><Month>00</Month><Day>00</Day></NoticeDt><ContactDt><Year>2016</Year><Month>10</Month><Day>04</Day></ContactDt><PrevOneStmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></PrevOneStmtDt><PrevTwoStmtDt><Year>0000</Year><Month>00</Month><Day>00</Day></PrevTwoStmtDt></DepAcctRec></AcctInqRs></BankSvcRs></IFX>"
+    http_version: 
+  recorded_at: Thu, 02 Mar 2017 13:41:38 GMT
+recorded_with: VCR 3.0.1

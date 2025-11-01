@@ -1,0 +1,10 @@
+{"SignonRq":{"SignonPswd":{
+"SignonRole":"CSR",
+"CustId":{"SPName":"FiservICBS","CustLoginId":"WEBTEH"},
+"CustPswd":{"CryptType":"NONE","Pswd":"webteh"},
+"GenSessKey":"0"},
+"ClientDt":{"Year":"2008","Month":"3","Day":"21"},
+"ClientApp":{"Org":"Fiserv","Name":"WebTech","Version":"0.1","ClientAppKey":"PSBNAKILNHYTDLPZKFCMNXTNYPBGZVLS"},
+"ComputerId":"172.254.5.122","InstitutionCode":"PSBNA"},
+"EnvironmentInfo":{"EnvironmentName":"Pagafasil"}
+}
