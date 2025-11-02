@@ -1,5 +1,6 @@
 require 'tilt/erb'
 require 'rqrcode'
+require 'cgi'
 
 class Mailer < Roda
 
@@ -17,8 +18,11 @@ class Mailer < Roda
         to user[:email]
         subject "[#{WebPay.opts[:app_name]}] - confirm your registration"
 
-        # change size based on uri length
-        otp_uri = ROTP::TOTP.new(user[:otp_code]).provisioning_uri("#{WebPay.opts[:app_name]}:#{user[:email]}")
+        # Manually build provisioning URI to avoid URI.encode deprecated in Ruby 3.x
+        issuer = WebPay.opts[:app_name]
+        account = "#{issuer}:#{user[:email]}"
+        secret = user[:otp_code]
+        otp_uri = "otpauth://totp/#{CGI.escape(account)}?secret=#{secret}&issuer=#{CGI.escape(issuer)}"
         qr_size = 8
         qr_code = nil
 

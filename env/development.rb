@@ -16,14 +16,14 @@ module CurrentEnvironment
     # token for mobile apps
     WebPay.opts[:mobile_key] = ENV["MOBILE_KEY"]
 
-    # SMTP via Office 365 (postman@webteh.us)
+    # SMTP via Gmail (sanchopansayelburro@gmail.com)
     Mail.defaults do
       delivery_method :smtp,
         address: ENV["WP_SMTP_HOST"],
         port: ENV["WP_SMTP_PORT"],
         user_name: ENV["WP_SMTP_USERNAME"],
         password: ENV["WP_SMTP_PASSWORD"],
-        authentication: :login,
+        authentication: :plain,
         enable_starttls_auto: true,
         openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  # Disable SSL verification for development only
         open_timeout: 10,  # 10 seconds to connect
