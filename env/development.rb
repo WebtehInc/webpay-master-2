@@ -24,7 +24,10 @@ module CurrentEnvironment
         user_name: ENV["WP_SMTP_USERNAME"],
         password: ENV["WP_SMTP_PASSWORD"],
         authentication: :login,
-        enable_starttls_auto: true
+        enable_starttls_auto: true,
+        openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  # Disable SSL verification for development only
+        open_timeout: 10,  # 10 seconds to connect
+        read_timeout: 10   # 10 seconds to read response
     end
 
     # app settings
