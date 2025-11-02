@@ -41,7 +41,7 @@ module CurrentEnvironment
     WebPay.opts[:upload_path] = './uploads'
 
     # constants for mailer
-    spa_host_url = ENV['WP_SPA_HOST_URL']
+    spa_host_url = ENV['WP_SPA_HOST_URL'].sub('/#!', '/#')  # Remove bang from hash for Vue Router
     Mailer.opts[:spa_constants] = { activate_user_path: "#{spa_host_url}/activate",
                                     reset_password_path: "#{spa_host_url}/forgotten-password"}
     Mailer.opts[:error_email] = ENV["ERROR_EMAIL"].to_s.split(',') # send exceptions here
