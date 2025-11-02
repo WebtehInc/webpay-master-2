@@ -4,14 +4,74 @@
 
 ---
 
-## 📊 Current Session: v1.4 - Test Suite Setup & Execution ✅
+## 📊 Current Session: v1.5 - Email Integration & SMTP Configuration ✅
 **Date**: 2025-11-01
-**Status**: ✅ Completed - Test suite runs successfully, 90 tests executed
+**Status**: ✅ Completed - Signup email flow ready for testing
 **Branch**: `phase-1-security-fixes`
 
 ---
 
 ## 📜 Session Version History
+
+### v1.5 - Email Integration & SMTP Configuration (COMPLETED)
+**Date**: 2025-11-01
+**Status**: ✅ Completed
+
+**Goal**: Enable signup confirmation emails with QR code from postman@webteh.us
+
+**Completed**:
+- ✅ **CORS Configuration**:
+  - Installed rack-cors gem v2.0.0 (was in Gemfile but not installed)
+  - Moved CORS middleware BEFORE SecureHeaders in config.ru
+  - Added `:delete` to allowed CORS methods
+  - Removed incompatible `:credentials => true` flag
+
+- ✅ **SMTP Configuration (Office 365)**:
+  - Added Mail.defaults configuration in env/development.rb
+  - Configured Office 365 SMTP (smtp.office365.com:587)
+  - Added authentication: :login
+  - Added enable_starttls_auto: true
+  - Disabled SSL verification for development (openssl_verify_mode: VERIFY_NONE)
+  - Added timeout configuration (open_timeout: 10, read_timeout: 10)
+
+- ✅ **Database Fixes**:
+  - Fixed email_from_address setting in database
+  - Changed from plain string to JSON array format
+  - Updated: `"postman@webteh.us"` → `["postman@webteh.us"]`
+  - Resolves JSON::ParserError when sending emails
+
+- ✅ **Shared Logging Setup**:
+  - Created `/var/tmp/webpay-master/` directory
+  - Configured backend to log to `/var/tmp/webpay-master/puma.log`
+  - Enables simultaneous log monitoring by multiple developers
+
+- ✅ **SMTP AUTH Enabled**:
+  - User enabled SMTP AUTH in Office 365 Admin Center
+  - Resolved: "SmtpClientAuthentication is disabled for the Tenant" error
+  - postman@webteh.us account now allows SMTP authentication
+
+**Git Commits**:
+```
+d037178 - fix: add SMTP timeout configuration for email delivery
+12c8ad5 - fix: configure CORS middleware and SMTP authentication
+f08f48d - config: enable CORS for all origins in development mode
+```
+
+**Issues Resolved**:
+1. **CORS Policy Errors** - rack-cors gem not installed
+2. **JSON Parsing Error** - Database value was string instead of JSON array
+3. **SSL Certificate Error** - Disabled SSL verification for development
+4. **SMTP Timeout** - Added 10-second timeouts for connection and read
+5. **SMTP Auth Error** - User enabled SMTP AUTH in Office 365
+
+**Testing Status**:
+- ✅ Frontend → Backend communication working
+- ✅ Form validation working (phone: `+573104968771`, birth_date: `1975-02-23`)
+- ✅ All signup data reaching backend correctly
+- ✅ Backend startup successful with SMTP configuration
+- ⏳ Email delivery pending final test (SMTP AUTH just enabled)
+
+---
 
 ### v1.0 - Initial Security Fixes & Infrastructure
 **Date**: 2025-11-01
