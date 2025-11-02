@@ -16,9 +16,15 @@ module CurrentEnvironment
     # token for mobile apps
     WebPay.opts[:mobile_key] = ENV["MOBILE_KEY"]
 
-    # mail catcher
+    # SMTP via Office 365 (postman@webteh.us)
     Mail.defaults do
-      delivery_method :smtp, address: ENV["WP_SMTP_HOST"], port: ENV["WP_SMTP_PORT"]
+      delivery_method :smtp,
+        address: ENV["WP_SMTP_HOST"],
+        port: ENV["WP_SMTP_PORT"],
+        user_name: ENV["WP_SMTP_USERNAME"],
+        password: ENV["WP_SMTP_PASSWORD"],
+        authentication: :login,
+        enable_starttls_auto: true
     end
 
     # app settings
