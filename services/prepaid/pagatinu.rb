@@ -7,7 +7,7 @@ module PrepaidService
       # :receipt_no=>"VUPSB/9915402", :token=>"01234567890123456789",
       # :units=>"217 KWh", :resource=>"electricity", :cust_vend_acct=>"93000",
       # :cust_vend_name=>"CU 3, T", :meter_number=>"04229889888",
-      # :tariff_rate_amount=>"0.57", :tariff_rate_currency=>"ANG", :tariff_name=>"DOMESTICO"
+      # :tariff_rate_amount=>"0.57", :tariff_rate_currency=>"XCG", :tariff_name=>"DOMESTICO"
 
       begin
         pagatinu_client = WebPay.opts[:pagatinu_client].new

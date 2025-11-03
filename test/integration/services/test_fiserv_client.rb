@@ -34,7 +34,7 @@ module Gateway
     def test_transfer_success_DD_to_DD
       src_acct_balance = get_balance('DD', '9900003588')
       dest_acct_balance = get_balance('DD', '9900003589')
-      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1, 'ANG'
+      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1, 'XCG'
       assert_status rv, 'approved'
       assert_equal src_acct_balance-1, get_balance('DD', '9900003588'), 'src balance is off'
       assert_equal dest_acct_balance+1, get_balance('DD', '9900003589'), 'dest balance is off'
@@ -42,20 +42,20 @@ module Gateway
 
     def test_transfer_success_GL_to_DD
       dest_acct_balance = get_balance('DD', '9900003588')
-      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'GL', '270900000006', 'DD', '9900003588', 1, 'ANG'
+      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'GL', '270900000006', 'DD', '9900003588', 1, 'XCG'
       assert_status rv, 'approved'
       assert_equal dest_acct_balance+1, get_balance('DD', '9900003588'), 'dest balance is off'
     end
 
     def test_transfer_success_DD_to_GL
       src_acct_balance = get_balance('DD', '9900003588')
-      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'GL', '270900000006', 1, 'ANG'
+      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'GL', '270900000006', 1, 'XCG'
       assert_status rv, 'approved'
       assert_equal src_acct_balance-1, get_balance('DD', '9900003588'), 'src balance is off'
     end
 
     def test_transfer_failure
-      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1000000000000, 'ANG'
+      rv = PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1000000000000, 'XCG'
       assert_status rv, 'declined'
       assert_equal 'declined', rv[:status], 'status is off'
       assert_equal 'PS10050', rv[:response_code], 'response_code is off'
@@ -75,12 +75,12 @@ module Gateway
 
       current_balance = rv[:balances].select{|k| k[:type] == 'current'}.first
       assert current_balance, "no current_balance in #{rv[:balances]}"
-      assert_equal 'ANG', current_balance[:currency], 'current_balance currency is off'
+      assert_equal 'XCG', current_balance[:currency], 'current_balance currency is off'
       assert current_balance[:amount] > 0, 'current_balance amount is off'
 
       available_balance = rv[:balances].select{|k| k[:type] == 'available'}.first
       assert available_balance, "no available_balance in #{rv[:balances]}"
-      assert_equal 'ANG', available_balance[:currency], 'available_balance currency is off'
+      assert_equal 'XCG', available_balance[:currency], 'available_balance currency is off'
       assert available_balance[:amount] > 0, 'available_balance amount is off'
     end
 

@@ -38,7 +38,7 @@ VALID_BODY_MOCK =
           "availCredit" => {
             "@attributes" => {
               "value" => "0",
-              "symbol" => "ANG",
+              "symbol" => "XCG",
             },
           },
           "batchStatus" => {
@@ -74,7 +74,7 @@ VALID_BODY_MOCK =
                 "amt" => {
                   "@attributes" => {
                     "value" => "100",
-                    "symbol" => "ANG",
+                    "symbol" => "XCG",
                   },
                 },
                 "creditTokenIssue" => {
@@ -121,7 +121,7 @@ VALID_BODY_MOCK =
                         "q2rate" => {
                           "@attributes" => {
                             "value" => "0.60350",
-                            "symbol" => "ANG",
+                            "symbol" => "XCG",
                           },
                         },
                       },
@@ -135,7 +135,7 @@ VALID_BODY_MOCK =
                         "q2rate" => {
                           "@attributes" => {
                             "value" => "0.70980",
-                            "symbol" => "ANG",
+                            "symbol" => "XCG",
                           },
                         },
                       },
@@ -149,7 +149,7 @@ VALID_BODY_MOCK =
                         "q2rate" => {
                           "@attributes" => {
                             "value" => "0.75400",
-                            "symbol" => "ANG",
+                            "symbol" => "XCG",
                           },
                         },
                       },
@@ -161,7 +161,7 @@ VALID_BODY_MOCK =
                 "amt" => {
                   "@attributes" => {
                     "value" => "0",
-                    "symbol" => "ANG",
+                    "symbol" => "XCG",
                   },
                 },
                 "accDesc" => "VAT",
@@ -170,13 +170,13 @@ VALID_BODY_MOCK =
             "tenderAmt" => {
               "@attributes" => {
                 "value" => "100",
-                "symbol" => "ANG",
+                "symbol" => "XCG",
               },
             },
             "change" => {
               "@attributes" => {
                 "value" => "0",
-                "symbol" => "ANG",
+                "symbol" => "XCG",
               },
             },
           },
@@ -224,7 +224,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
       "availCredit" => {
         "@attributes" => {
           "value" => "0",
-          "symbol" => "ANG",
+          "symbol" => "XCG",
         },
       },
       "batchStatus" => {
@@ -317,7 +317,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
             "amt" => {
               "@attributes" => {
                 "value" => "16",
-                "symbol" => "ANG",
+                "symbol" => "XCG",
               },
             },
             "tariff" => {
@@ -334,7 +334,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
                     "q4rate" => {
                       "@attributes" => {
                         "value" => "0.60350",
-                        "symbol" => "ANG",
+                        "symbol" => "XCG",
                       },
                     },
                     "q4units" => {
@@ -348,7 +348,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
                     "q4rate" => {
                       "@attributes" => {
                         "value" => "0.70980",
-                        "symbol" => "ANG",
+                        "symbol" => "XCG",
                       },
                     },
                     "q4units" => {
@@ -362,7 +362,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
                     "q4rate" => {
                       "@attributes" => {
                         "value" => "0.75400",
-                        "symbol" => "ANG",
+                        "symbol" => "XCG",
                       },
                     },
                     "q4units" => {
@@ -407,7 +407,7 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
             "amt" => {
               "@attributes" => {
                 "value" => "0",
-                "symbol" => "ANG",
+                "symbol" => "XCG",
               },
             },
             "accDesc" => "VAT",
@@ -416,13 +416,13 @@ VALID_BODY_MOCK_WITH_THREE_T0KENS = {
         "change" => {
           "@attributes" => {
             "value" => "0",
-            "symbol" => "ANG",
+            "symbol" => "XCG",
           },
         },
         "tenderAmt" => {
           "@attributes" => {
             "value" => "16",
-            "symbol" => "ANG",
+            "symbol" => "XCG",
           },
         },
       },

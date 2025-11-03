@@ -50,7 +50,7 @@ http_interactions:
               <XferInfo>
                 <CurAmt>
                   <Amt type="float">10000000000.0</Amt>
-                  <CurCode>ANG</CurCode>
+                  <CurCode>XCG</CurCode>
                 </CurAmt>
                 <DepAcctIdFrom>
                   <AcctId>9900003588</AcctId>

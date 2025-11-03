@@ -15,7 +15,7 @@ APP_ENV = {
 }
 
 # https://www.iban.com/currency-codes.html
-CURRENCY_CODES = { "USD" => 840, "EUR" => 978, "ANG" => 532 }
+CURRENCY_CODES = { "USD" => 840, "EUR" => 978, "XCG" => 532 }
 
 # user types
 USER_TYPES = { basic: "Basic", standard: "Standard" }

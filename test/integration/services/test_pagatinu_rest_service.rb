@@ -41,7 +41,7 @@ class PagatinuRestServiceTest < Test
                    :energy_si_unit => "kWh",
                    :energy2_si_unit => nil,
                    :energy3_si_unit => nil,
-                   :amount_paid_currency => "ANG",
+                   :amount_paid_currency => "XCG",
                    :amount_paid_value => "100",
                    :token1 => "04257670895000001327",
                    :token2 => nil,

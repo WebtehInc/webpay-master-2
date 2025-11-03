@@ -19,7 +19,7 @@ module Gateway
     #   :cust_vend_name=>"CU 3, T",
     #   :meter_number=>"04111111110",
     #   :tariff_rate_amount=>"0.76",
-    #   :tariff_rate_currency=>"ANG",
+    #   :tariff_rate_currency=>"XCG",
     #   :tariff_name=>"DOMESTICO"}
 
     # NEW RESPONSE:
@@ -33,7 +33,7 @@ module Gateway
     #   :cust_vend_name=>"JULIANA SIGNALD  A",
     #   :meter_number=>"04155183447",
     #   :tariff_name=>"DOMESTICO",
-    #   :tariff_rates=>[{:amount=>"0.60", :currency=>"ANG"}, {:amount=>"0.64", :currency=>"ANG"}]}
+    #   :tariff_rates=>[{:amount=>"0.60", :currency=>"XCG"}, {:amount=>"0.64", :currency=>"XCG"}]}
 
 
     def test_success

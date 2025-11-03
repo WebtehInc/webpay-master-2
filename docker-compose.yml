@@ -43,7 +43,7 @@ services:
       # settings
       - APP_NAME=Pagafasil
       - BANK_NAME=PSB bank
-      - DEFAULT_CURENCY=ANG
+      - DEFAULT_CURENCY=XCG
       # mailer
       # ERROR_EMAIL=dosadnizub@gmail.com
       ########## SERVICES ##########

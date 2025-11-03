@@ -111,7 +111,7 @@ api_call('/api/change-cashier-pin', request, digest_params.keys, [:terminal_key,
 ############ bill payment
 # API CHANGE NOTE: customer_balance is removed from response - response digest is now digest(terminal_key + access_token + id)
 digest_params = { terminal_key: terminal_key, access_token: access_token, operator_code: bill_operator_code, customer_number: bill_customer_number,
-                  amount: '1234', currency: 'ANG', systan: rand(99999999)}
+                  amount: '1234', currency: 'XCG', systan: rand(99999999)}
 request       = { access_token: access_token, operator_code: digest_params[:operator_code], digest: calculate_digest(*digest_params.values),
                   cashier_pin: cashier_pin, cashier_id: cashier_id, customer_number: digest_params[:customer_number],
                   amount: digest_params[:amount], currency: digest_params[:currency], payment_method: 'card', payment_method_type: 'debit',
@@ -137,7 +137,7 @@ api_call('/api/sell-voucher', request, digest_params.keys, [:terminal_key, :acce
 
 ############ sell prepaid
 digest_params = { terminal_key: terminal_key, access_token: access_token, operator_code: prepaid_operator_code, customer_number: prepaid_customer_number,
-                  amount: '1234', currency: 'ANG', systan: rand(99999999)}
+                  amount: '1234', currency: 'XCG', systan: rand(99999999)}
 request       = { access_token: access_token, operator_code: digest_params[:operator_code], digest: calculate_digest(*digest_params.values),
                   cashier_pin: cashier_pin, cashier_id: cashier_id, customer_number: digest_params[:customer_number],
                   amount: digest_params[:amount], currency: digest_params[:currency], payment_method: 'card', payment_method_type: 'debit',
@@ -148,7 +148,7 @@ api_call('/api/sell-prepaid', request, digest_params.keys, [:terminal_key, :acce
 ############ top up
 # API CHANGE NOTE: account_number is replaced with card_number which is read from NFC card, card_pin is a new input variable
 # API CHANGE NOTE: account_balance removed from response - response digest is now digest(terminal_key + access_token + id)
-digest_params = { terminal_key: terminal_key, access_token: access_token, card_number: card_number, amount: '1234', currency: 'ANG', systan: rand(99999999)}
+digest_params = { terminal_key: terminal_key, access_token: access_token, card_number: card_number, amount: '1234', currency: 'XCG', systan: rand(99999999)}
 request       = { access_token: access_token, digest: calculate_digest(*digest_params.values), cashier_pin: cashier_pin, cashier_id: cashier_id, card_pin: card_pin,
                   card_number: card_number, amount: digest_params[:amount], currency: digest_params[:currency], systan: digest_params[:systan], client_datetime: Time.now}
 response      =  api_call('/api/top-up', request, digest_params.keys, [:terminal_key, :access_token, :id])
@@ -164,7 +164,7 @@ api_call('/api/reverse-top-up', request, digest_params.keys, [:terminal_key, :ac
 
 ############ sale wallet
 # NOTE: this is new API endpoint, input and output spec is the same as for top-up
-digest_params = { terminal_key: terminal_key, access_token: access_token, card_number: card_number, amount: '1234', currency: 'ANG', systan: rand(99999999)}
+digest_params = { terminal_key: terminal_key, access_token: access_token, card_number: card_number, amount: '1234', currency: 'XCG', systan: rand(99999999)}
 request       = { access_token: access_token, digest: calculate_digest(*digest_params.values), cashier_pin: cashier_pin, cashier_id: cashier_id, card_pin: card_pin,
                   card_number: card_number, amount: digest_params[:amount], currency: digest_params[:currency], systan: digest_params[:systan], client_datetime: Time.now}
 api_call('/api/sale-wallet', request, digest_params.keys, [:terminal_key, :access_token, :id])

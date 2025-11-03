@@ -1,25 +1,25 @@
 [
-{"id":1,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":100,"currency":"ANG","active":true,"status":"approved","type":"debit"},
-{"id":2,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":50,"currency":"ANG","active":true,"status":"approved","type":"debit"},
+{"id":1,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"bill","amount":100,"currency":"XCG","active":true,"status":"approved","type":"debit"},
+{"id":2,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"bill","amount":50,"currency":"XCG","active":true,"status":"approved","type":"debit"},
 
-{"id":3,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"voucher","amount":100,"currency":"ANG","active":true,"status":"approved","type":"debit"},
-{"id":4,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"voucher","amount":50,"currency":"ANG","active":true,"status":"approved","type":"debit"},
+{"id":3,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"voucher","amount":100,"currency":"XCG","active":true,"status":"approved","type":"debit"},
+{"id":4,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"voucher","amount":50,"currency":"XCG","active":true,"status":"approved","type":"debit"},
 
-{"id":5,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid","amount":100,"currency":"ANG","active":true,"status":"approved","type":"debit"},
-{"id":6,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid","amount":50,"currency":"ANG","active":true,"status":"approved","type":"debit"},
+{"id":5,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid","amount":100,"currency":"XCG","active":true,"status":"approved","type":"debit"},
+{"id":6,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid","amount":50,"currency":"XCG","active":true,"status":"approved","type":"debit"},
 
-{"id":7,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer","amount":100,"currency":"ANG","active":true,"status":"approved","type":"debit"},
-{"id":8,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer","amount":50,"currency":"ANG","active":true,"status":"approved","type":"debit"},
+{"id":7,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer","amount":100,"currency":"XCG","active":true,"status":"approved","type":"debit"},
+{"id":8,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer","amount":50,"currency":"XCG","active":true,"status":"approved","type":"debit"},
 
-{"id":9,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer","amount":100,"currency":"ANG","active":false,"status":"approved","type":"credit"},
-{"id":10,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer","amount":50,"currency":"ANG","active":false,"status":"approved","type":"credit"},
+{"id":9,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"transfer","amount":100,"currency":"XCG","active":false,"status":"approved","type":"credit"},
+{"id":10,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"transfer","amount":50,"currency":"XCG","active":false,"status":"approved","type":"credit"},
 
-{"id":10,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"top_up","amount":100,"currency":"ANG","active":false,"status":"approved","type":"debit"},
-{"id":11,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"top_up","amount":50,"currency":"ANG","active":false,"status":"approved","type":"debit"},
+{"id":10,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"top_up","amount":100,"currency":"XCG","active":false,"status":"approved","type":"debit"},
+{"id":11,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"top_up","amount":50,"currency":"XCG","active":false,"status":"approved","type":"debit"},
 
-{"id":12,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid","amount":100,"currency":"ANG","active":false,"status":"approved","type":"debit"},
-{"id":13,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid","amount":50,"currency":"ANG","active":false,"status":"approved","type":"debit"},
+{"id":12,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"prepaid","amount":100,"currency":"XCG","active":false,"status":"approved","type":"debit"},
+{"id":13,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"prepaid","amount":50,"currency":"XCG","active":false,"status":"approved","type":"debit"},
 
-{"id":14,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"sale_wallet","amount":100,"currency":"ANG","active":false,"status":"approved","type":"debit"},
-{"id":15,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"sale_wallet","amount":50,"currency":"ANG","active":false,"status":"approved","type":"debit"}
+{"id":14,"category":"Transaction","account_type":"personal","user_type":"basic","transaction_type":"sale_wallet","amount":100,"currency":"XCG","active":false,"status":"approved","type":"debit"},
+{"id":15,"category":"Transaction","account_type":"personal","user_type":"standard","transaction_type":"sale_wallet","amount":50,"currency":"XCG","active":false,"status":"approved","type":"debit"}
 ]

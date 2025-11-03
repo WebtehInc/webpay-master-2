@@ -10,7 +10,7 @@ require "faker"
 APP = Rack::Builder.parse_file('./demo/demo_config.ru').first
 USER_AGENT  = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5'
 DB.loggers  = []
-CURRENCY    = 'ANG'
+CURRENCY    = 'XCG'
 PASSWORD    = 'qwe123!Q'
 BIN         = '4400'
 PAN         = '4400539098448033'

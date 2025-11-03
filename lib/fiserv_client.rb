@@ -74,9 +74,9 @@ module PagafasilImporters
       rv
     end
 
-    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1, 'ANG'
-    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'SV', '8800000015', 'SV', '8800000016', 30, 'ANG'
-    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'SV', '8800000015', 'DD', '9900003588', 40, 'ANG'
+    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'DD', '9900003588', 'DD', '9900003589', 1, 'XCG'
+    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'SV', '8800000015', 'SV', '8800000016', 30, 'XCG'
+    # PagafasilImporters::FiservClient.new.transfer rand(10**12), 'SV', '8800000015', 'DD', '9900003588', 40, 'XCG'
     def transfer transaction_id, src_account_type, src_account_id, dest_account_type, dest_account_id, amount, currency, options = {}
       amount = (amount.to_f / 100).round(2)
       xfer_info = {

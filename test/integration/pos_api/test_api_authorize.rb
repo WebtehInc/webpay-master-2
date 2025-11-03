@@ -279,7 +279,7 @@ class TestApiAuthorize < Test
 
 
     # currency conversion tests
-    conversion_currency = 'ANG'
+    conversion_currency = 'XCG'
     conversion_rate = 1.2345
     converted_amount = (amount * conversion_rate).to_i
     conversion_data = {converted_amount: converted_amount, conversion_rate: conversion_rate, conversion_currency: conversion_currency}
