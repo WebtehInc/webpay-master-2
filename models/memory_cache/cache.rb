@@ -7,6 +7,13 @@ module MemoryCache
 
     # or load from db and write it to memory
     setting = Setting.where(name: name).first
+
+    # Check if setting exists before accessing it
+    unless setting
+      LOGGER.error "Setting '#{name}' not found in database!"
+      raise "Required setting '#{name}' is missing from database. Please add it to the settings table."
+    end
+
     MEMORY_STORE.set(setting[:name], setting.value)
     return setting.value
   end
