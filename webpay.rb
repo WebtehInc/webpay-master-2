@@ -82,82 +82,83 @@ class WebPay < Roda
       ["It works!"]
     end
 
-    r.post "login" do
-      puts "=> logging in ..."
-      user = Login.call(self)
-      r.finalize_login(user, self) if user
-    end
-
-    r.post "signup" do
-      puts "=> signin up ..."
-      Signup.call(self)
-    end
-
-    # for cache on client
-    r.get "constants" do
-      { pages: DB[:pages].select(:title, :body, :slug, :updated_at).all,
-        operators: DB[:operators].select(:name, :code, :type).order(:name).all,
-        products: DB[:products].select(:id, :name, :operator_code, :type).order(:name).all, # for lodgments template
-        fees: DB[:fees].select(:account_type, :user_type, :transaction_type, :amount, :currency).where(active: true).all,
-        constants: CONSTANTS_FOR_SPA }
-    end
-
-    r.get "info" do
-      APP_ENV
-    end
-
-    r.on "activate-user/:token" do |token|
-      r.get do
-        User.find_values_by_attrs([:email, :first_name, :last_name], activation_token: token).try(:to_hash)
-      end
-      r.post do
-        puts "=> activating user ..."
-        user = ActivateUser.call(self)
-        if user
-          puts "=> generating account ..."
-          Account.insert(user[:id], self)
-          r.finalize_login(user, self)
-        end
-      end
-    end
-
-    r.on "reset-password" do
-      puts "=> resetting password ..."
-
-      r.on ":token" do |token|
-        puts "=> getting user by reset password token ..."
-        user = User.find_all_values_by_attrs(reset_password_token: token)
-
-        r.get do
-          user.try(:public_values)
-        end
-
-        r.post do
-          puts "=> token ok, updating password ..."
-          r.finalize_login(user, self) if ResetPassword.call(user[:id], self)
-        end
-      end
-
-      # check email and generate reset token
-      r.post do
-        puts "=> getting user by email ..."
-        user = User.find_values_by_attrs([:id, :email, :first_name, :last_name, :active], email: params[:email]).try(:to_hash)
-        if user
-          render_forbidden("cannot reset password for inactive user") unless user[:active]
-          puts "=> generating reset password token ..."
-          token = Utils.generate_random_token
-          User.update_without_audit(user[:id], reset_password_token: token)
-          user[:token] = token
-          Mailer.sendmail("/login/reset_password", user)
-          render_success(message: "password reset done")
-        else
-          puts "=> no user with given email ..."
-          render_success # do not reveal non existent email to client
-        end
-      end
-    end
-
     r.on "api" do
+      r.post "login" do
+        puts "=> logging in ..."
+        user = Login.call(self)
+        r.finalize_login(user, self) if user
+      end
+
+      r.post "signup" do
+        puts "=> signin up ..."
+        Signup.call(self)
+      end
+
+      # for cache on client
+      r.get "constants" do
+        { pages: DB[:pages].select(:title, :body, :slug, :updated_at).all,
+          operators: DB[:operators].select(:name, :code, :type).order(:name).all,
+          products: DB[:products].select(:id, :name, :operator_code, :type).order(:name).all, # for lodgments template
+          fees: DB[:fees].select(:account_type, :user_type, :transaction_type, :amount, :currency).where(active: true).all,
+          constants: CONSTANTS_FOR_SPA }
+      end
+
+      r.get "info" do
+        APP_ENV
+      end
+
+      r.on "activate-user/:token" do |token|
+        r.get do
+          User.find_values_by_attrs([:email, :first_name, :last_name], activation_token: token).try(:to_hash)
+        end
+        r.post do
+          puts "=> activating user ..."
+          user = ActivateUser.call(self)
+          if user
+            puts "=> generating account ..."
+            Account.insert(user[:id], self)
+            r.finalize_login(user, self)
+          end
+        end
+      end
+
+      r.on "reset-password" do
+        puts "=> resetting password ..."
+
+        r.on ":token" do |token|
+          puts "=> getting user by reset password token ..."
+          user = User.find_all_values_by_attrs(reset_password_token: token)
+
+          r.get do
+            user.try(:public_values)
+          end
+
+          r.post do
+            puts "=> token ok, updating password ..."
+            r.finalize_login(user, self) if ResetPassword.call(user[:id], self)
+          end
+        end
+
+        # check email and generate reset token
+        r.post do
+          puts "=> getting user by email ..."
+          user = User.find_values_by_attrs([:id, :email, :first_name, :last_name, :active], email: params[:email]).try(:to_hash)
+          if user
+            render_forbidden("cannot reset password for inactive user") unless user[:active]
+            puts "=> generating reset password token ..."
+            token = Utils.generate_random_token
+            User.update_without_audit(user[:id], reset_password_token: token)
+            user[:token] = token
+            Mailer.sendmail("/login/reset_password", user)
+            render_success(message: "password reset done")
+          else
+            puts "=> no user with given email ..."
+            render_success # do not reveal non existent email to client
+          end
+        end
+      end
+
+      # MPOS routes below
       r.post ":api_route/retry" do |api_route|
         puts "=> MPOS: retrying #{api_route} ..."
         mapper = { "bill-payment" => BillPayment, "sell-voucher" => SellVoucher, "sell-prepaid" => SellPrepaid, "top-up" => TopUp, "sale-wallet" => SaleWallet }
