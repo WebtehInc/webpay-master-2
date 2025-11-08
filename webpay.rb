@@ -329,36 +329,36 @@ class WebPay < Roda
           end
         end
       end
-    end
 
-    # private routes started - 401
-    # user must log in to continue
-    authenticate!
+      # private routes started - 401
+      # user must log in to continue
+      authenticate!
 
-    # select voucher to buy
-    r.get "vouchers/:operator_code" do |code|
-      Voucher.select(:name, :price).where(operator_code: code, status: "available").distinct(:name).all
-    end
+      # select voucher to buy
+      r.get "vouchers/:operator_code" do |code|
+        Voucher.select(:name, :price).where(operator_code: code, status: "available").distinct(:name).all
+      end
 
-    # find account for transfer
-    r.post "find-accounts/:attr" do |attr|
-      puts "searching for account in transfer ..."
-      if attr == "account_number"
-        Account.where(account_number: params[:search][:account_number]).to_json(
-          only: Account::PUBLIC_ATTRS,
-          include: { users: { only: [:first_name, :last_name, :email, :phone] } },
-        )
-      else
-        if params[:search] && user = User.where(params[:search]).first
-          user.accounts_dataset.to_json(
+      # find account for transfer
+      r.post "find-accounts/:attr" do |attr|
+        puts "searching for account in transfer ..."
+        if attr == "account_number"
+          Account.where(account_number: params[:search][:account_number]).to_json(
             only: Account::PUBLIC_ATTRS,
             include: { users: { only: [:first_name, :last_name, :email, :phone] } },
           )
+        else
+          if params[:search] && user = User.where(params[:search]).first
+            user.accounts_dataset.to_json(
+              only: Account::PUBLIC_ATTRS,
+              include: { users: { only: [:first_name, :last_name, :email, :phone] } },
+            )
+          end
         end
       end
-    end
 
-    r.multi_route
+      r.multi_route
+    end
   end
 end
 
