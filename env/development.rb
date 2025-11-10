@@ -16,18 +16,25 @@ module CurrentEnvironment
     # token for mobile apps
     WebPay.opts[:mobile_key] = ENV["MOBILE_KEY"]
 
-    # SMTP via Gmail (sanchopansayelburro@gmail.com)
+    # SMTP via Gmail / sendmail
+    smtp_settings = {
+      address: ENV["WP_SMTP_HOST"],
+      port: ENV["WP_SMTP_PORT"],
+      enable_starttls_auto: false,
+      openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  # Disable SSL verification for development only
+      open_timeout: 10,  # 10 seconds to connect
+      read_timeout: 10   # 10 seconds to read response
+    }
+
+    # Only add authentication if username/password are provided
+    if ENV["WP_SMTP_USERNAME"].to_s.strip != ""
+      smtp_settings[:user_name] = ENV["WP_SMTP_USERNAME"]
+      smtp_settings[:password] = ENV["WP_SMTP_PASSWORD"]
+      smtp_settings[:authentication] = :plain
+    end
+
     Mail.defaults do
-      delivery_method :smtp,
-        address: ENV["WP_SMTP_HOST"],
-        port: ENV["WP_SMTP_PORT"],
-        user_name: ENV["WP_SMTP_USERNAME"],
-        password: ENV["WP_SMTP_PASSWORD"],
-        authentication: :plain,
-        enable_starttls_auto: true,
-        openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,  # Disable SSL verification for development only
-        open_timeout: 10,  # 10 seconds to connect
-        read_timeout: 10   # 10 seconds to read response
+      delivery_method :smtp, smtp_settings
     end
 
     # app settings
