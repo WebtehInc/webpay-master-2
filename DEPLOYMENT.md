@@ -1,20 +1,116 @@
 # WebPay Master - Deployment Guide
 
-**Version**: 2.0
-**Date**: 2025-11-02
+**Version**: v2.0.0-uat-stable
+**Date**: 2025-11-11
 **Ruby**: 3.3.0
-**Database**: PostgreSQL 15+ (Compatible with PostgreSQL 13.20+)
+**Database**: Aurora PostgreSQL 16.9
 **Schema Version**: 135 migrations
+
+---
+
+## 🚨 UAT Server Quick Deploy
+
+**For UAT server deployment (Amazon Linux 2023):**
+
+```bash
+# 1. Clone and checkout uat-stable
+cd /home/deploy
+git clone https://github.com/WebtehInc/webpay-master-2.git webpay-master
+cd webpay-master
+git checkout uat-stable
+
+# 2. Setup environment
+cp .env.example .env
+vim .env  # Configure UAT-specific values
+
+# 3. Create downloads directory
+mkdir -p downloads
+aws s3 sync s3://webpay-working-migration/mainapp_downloads/ downloads/
+
+# 4. Install dependencies
+bundle install
+
+# 5. Start service
+/home/deploy/bin/webpay-ctl start master
+```
+
+**See full UAT deployment guide below.**
 
 ---
 
 ## Table of Contents
 
-1. [Fresh Installation (New Developer)](#fresh-installation-new-developer)
-2. [UAT Migration (Existing Instance)](#uat-migration-existing-instance)
-3. [Production Deployment](#production-deployment)
-4. [Common Issues](#common-issues)
-5. [Testing Checklist](#testing-checklist)
+1. [UAT Server Deployment](#uat-server-deployment-amazon-linux-2023) ⭐ **NEW**
+2. [Fresh Installation (New Developer)](#fresh-installation-new-developer)
+3. [UAT Migration (Existing Instance)](#uat-migration-existing-instance)
+4. [Production Deployment](#production-deployment)
+5. [Common Issues](#common-issues)
+6. [Testing Checklist](#testing-checklist)
+
+---
+
+## UAT Server Deployment (Amazon Linux 2023)
+
+### Prerequisites
+
+- AWS access (uat-vidanova profile)
+- Access to i-0a10891e7609c86de via SSM
+- Database credentials
+- InfoSwitch merchant credentials
+
+### Quick Start
+
+```bash
+# Connect to UAT
+aws ssm start-session --profile uat-vidanova --target i-0a10891e7609c86de
+
+# Switch to deploy user
+sudo su - deploy
+
+# Clone repo (if not exists)
+cd /home/deploy
+git clone https://github.com/WebtehInc/webpay-master-2.git webpay-master
+cd webpay-master
+git checkout uat-stable
+
+# Setup environment
+cp .env.example .env
+
+# Edit .env with real credentials:
+# - WP_DEV_DATABASE_URL (Aurora password)
+# - JWT_KEY (openssl rand -base64 32)
+# - MOBILE_KEY (openssl rand -base64 32)
+# - INFOSWITCH_AUTHENTICITY_TOKEN (from Switch Admin)
+# - INFOSWITCH_SECRET (from Switch Admin)
+vim .env
+
+# Create downloads directory
+mkdir -p downloads
+aws s3 sync s3://webpay-working-migration/mainapp_downloads/ downloads/
+
+# Install dependencies
+bundle install
+
+# Start service
+/home/deploy/bin/webpay-ctl start master
+
+# Verify
+/home/deploy/bin/webpay-ctl status master
+tail -f /var/log/webpay/master.log
+```
+
+### UAT Environment Variables
+
+**Required in .env:**
+- `INFOSWITCH_URL=http://switch-uat-1a.vidanovabank.link:5002`
+- `ISO_SWITCH_URL=http://switch-uat-1a.vidanovabank.link:5005`
+- `INFOSWITCH_MODULE=girasol`
+- `MEMCACHED_URL=uat-webpay-memcached.ray4je.0001.use1.cache.amazonaws.com:11211`
+- `WP_SPA_HOST_URL=https://webpay-spa.uat.vidanovabank.services`
+
+See `.env.example` for full configuration template.
+
+---
 
 ---
 
