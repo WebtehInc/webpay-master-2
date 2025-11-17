@@ -30,6 +30,13 @@ module Jwt
     def authenticate!
       if env['HTTP_AUTHORIZATION']
         encoded_token = env['HTTP_AUTHORIZATION'].split(' ').last
+
+        # Check if token is blacklisted (logged out)
+        if JwtBlacklist.blacklisted?(encoded_token)
+          puts msg = 'Jwt => token has been invalidated (logged out) ...'
+          render_unauthorized([msg])
+        end
+
         if decoded_token = Jwt.decode_token(self, encoded_token)
           self.user_id = decoded_token[0]['user_id']
           puts "Jwt => token ok for user_id: #{user_id} ..."

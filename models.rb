@@ -118,6 +118,9 @@ ACCOUNT_SETTINGS = { low_stock: {} }
 # helpers
 require "./utils"
 
+# JWT blacklist service
+require "./lib/jwt_blacklist"
+
 # sequel
 require "./db/database"
 
