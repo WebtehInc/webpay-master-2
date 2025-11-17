@@ -42,6 +42,12 @@ gem "rqrcode"
 # memcached
 gem "dalli"
 
+# redis
+gem "redis", "~> 5.0"
+
+# rate limiting
+gem "rack-attack", "~> 6.7"
+
 # validation - UPGRADED TO RUBY 3.x COMPATIBLE VERSIONS
 # Note: d_struct gem may need updates for new dry-validation API
 gem "dry-configurable", "~> 1.1"     # 0.1.4 → 1.1 (Ruby 3.x compatible)
